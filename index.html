@@ -20,9 +20,8 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden;
+            overflow-x: hidden;
         }
-        /* شاشة الموافقة والترحيب */
         .overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -49,7 +48,6 @@
             margin-bottom: 10px;
             text-shadow: 0 0 10px rgba(223, 183, 108, 0.5);
         }
-        /* النموذج الرئيسي */
         .main-container {
             background: var(--card-bg);
             border: 1px solid rgba(223, 183, 108, 0.2);
@@ -90,7 +88,6 @@
             border-color: var(--gold);
             outline: none;
         }
-        /* أزرار ذهبية فخمة */
         .btn-gold {
             background: linear-gradient(45deg, var(--dark-gold), var(--gold));
             color: #121212;
@@ -112,17 +109,15 @@
 </head>
 <body>
 
-    <!-- الشاشة الترحيبية (الموافقة) -->
     <div class="overlay" id="welcomeOverlay">
         <div class="welcome-card">
-            <h1>موقع الدراكي</h1>
+            <h1>موقع الدراك</h1>
             <p>مرحباً بك. هذا الموقع مخصص لجمع معلومات التسجيل وعرضها للإدارة في السيرفر.</p>
             <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 25px;">بالدخول للموقع أنت توافق على مشاركة المعلومات العامة التالية معنا.</p>
             <button class="btn-gold" onclick="acceptAndEnter()">موافق ودخول</button>
         </div>
     </div>
 
-    <!-- النموذج الرئيسي لجمع البيانات -->
     <div class="main-container" id="mainFormContainer">
         <h2>استمارة معلومات الأعضاء</h2>
         <form id="drakForm">
@@ -140,18 +135,16 @@
             </div>
             <div class="form-group">
                 <label for="discordUser">اسم حسابك في ديسكورد (Discord Username):</label>
-                <input type="text" id="discordUser" placeholder="مثال: Username#0000 أو username" required>
+                <input type="text" id="discordUser" placeholder="مثال: username" required>
             </div>
             <button type="submit" class="btn-gold">إرسال المعلومات للقروب</button>
         </form>
     </div>
 
     <script>
-        // كود الانتقال من شاشة الترحيب للموقع
         function acceptAndEnter() {
             const overlay = document.getElementById('welcomeOverlay');
             const container = document.getElementById('mainFormContainer');
-            
             overlay.style.opacity = '0';
             setTimeout(() => {
                 overlay.style.display = 'none';
@@ -160,24 +153,22 @@
             }, 500);
         }
 
-        // كود معالجة وإرسال البيانات للديسكورد
         document.getElementById('drakForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            // رابط الـ Webhook الخاص بك مدمج تلقائياً هنا
-            const webhookURL = "https://discord.com/api/webhooks/1528062004420415751/ZjX35WlsUyYpfB8CjhUzzDAzIAJQxl6nCyu41yZf-YwKmxDMPgf3A5R_gWrupDmNLjX1";
+            // امسح الرابط التجريبي بالأسفل وحط رابط البوت (Webhook) الجديد حقك بالكامل داخل علامات التنصيص ""
+            const webhookURL = "https://discord.com/api/webhooks/1528062004420415751/ZjX35WlPvH9t";
 
             const avatar = document.getElementById('userAvatar').value;
             const email = document.getElementById('userEmail').value;
             const roblox = document.getElementById('robloxUser').value;
             const discord = document.getElementById('discordUser').value;
 
-            // تنسيق الرسالة ببطاقة ذهبية (Embed) فخمة تظهر بقروبك
             const drakEmbed = {
                 embeds: [{
                     title: "👑 عضو جديد تقدم بطلب تسجيل (موقع الدراك)",
-                    color: 14661484, // اللون الذهبي برمجياً
-                    thumbnail: { url: avatar },
+                    color: 14661484,
+                    thumbnail: { url: avatar.startsWith('http') ? avatar : 'https://i.imgur.com/wSTFkRM.png' },
                     fields: [
                         { name: "📧 البريد الإلكتروني:", value: email, inline: false },
                         { name: "🎮 حساب روبلوكس:", value: roblox, inline: true },
@@ -198,7 +189,7 @@
                     alert('تم إرسال معلوماتك بنجاح إلى إدارة الدراك!');
                     document.getElementById('drakForm').reset();
                 } else {
-                    alert('حدث خطأ أثناء الإرسال، يرجى مراجعة الإدارة.');
+                    alert('حدث خطأ أثناء الإرسال، تأكد من صحة الرابط الجديد وسماحية الروم.');
                 }
             })
             .catch(error => {
