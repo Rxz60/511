@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LUA SHIELD</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@700;800;900&family=Fira+Code&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -14,6 +14,19 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
 .stars{position:fixed;inset:0;z-index:0;pointer-events:none}
 .star{position:absolute;border-radius:50%;background:#fff;opacity:0;animation:t var(--d,4s) var(--dl,0s) ease infinite}
 @keyframes t{0%,100%{opacity:0;transform:scale(.5)}50%{opacity:var(--o,.6);transform:scale(1)}}
+.login{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:rgba(4,6,13,.96);backdrop-filter:blur(20px);padding:20px}
+.login.hide{display:none}
+.lbox{background:var(--card);border:1px solid var(--border);border-radius:28px;padding:50px 40px;max-width:420px;width:100%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.6);animation:pop .5s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes pop{from{opacity:0;transform:scale(.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.licon{width:80px;height:80px;margin:0 auto 20px;border-radius:22px;background:linear-gradient(135deg,var(--violet),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:2rem;box-shadow:0 12px 40px rgba(139,92,246,.5)}
+.lbox h2{font-size:1.6rem;font-weight:900;margin-bottom:8px}
+.lbox p{color:var(--dim);font-size:.85rem;margin-bottom:24px}
+.li{width:100%;padding:14px 18px;background:rgba(0,0,0,.35);border:1px solid var(--border);border-radius:14px;color:#fff;font-size:1rem;font-family:'Fira Code',monospace;outline:none;text-align:center;transition:.3s;letter-spacing:2px}
+.li:focus{border-color:var(--cyan);box-shadow:0 0 0 4px rgba(0,242,254,.12)}
+.lb{width:100%;margin-top:14px;padding:14px;background:linear-gradient(135deg,var(--violet),var(--cyan));border:none;border-radius:14px;color:#fff;font-family:'Tajawal',sans-serif;font-size:1rem;font-weight:900;cursor:pointer;transition:.3s;box-shadow:0 8px 24px rgba(139,92,246,.35)}
+.lb:hover{transform:translateY(-2px)}
+.lerr{color:var(--red);font-size:.8rem;margin-top:12px;display:none}
+.lerr.s{display:block}
 .topbar{position:relative;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:16px 36px;background:rgba(4,6,13,.75);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
 .brand{display:flex;align-items:center;gap:12px;font-weight:900;font-size:1.2rem}
 .logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--violet),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:0 8px 24px rgba(139,92,246,.4)}
@@ -34,18 +47,18 @@ h1 span{background:linear-gradient(135deg,var(--violet),var(--cyan),var(--pink))
 .pt i{color:var(--cyan)}
 .mini{width:32px;height:32px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;color:var(--dim);cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center}
 .mini:hover{color:#fff;border-color:var(--cyan);background:rgba(0,242,254,.1)}
-.ta{width:100%;min-height:420px;background:transparent;border:none;color:var(--text);font-family:'Fira Code',monospace;font-size:.85rem;line-height:1.7;padding:20px;outline:none;resize:vertical;direction:ltr;text-align:left}
+.ta{width:100%;min-height:380px;background:transparent;border:none;color:var(--text);font-family:'Fira Code',monospace;font-size:.85rem;line-height:1.7;padding:20px;outline:none;resize:vertical;direction:ltr;text-align:left}
 .ta::placeholder{color:var(--low)}
 .out{color:var(--cyan)}
 .pf{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-top:1px solid var(--border);background:rgba(0,0,0,.2);font-size:.75rem;color:var(--dim);font-weight:700}
 .pw{display:inline-flex;padding:3px 12px;border-radius:50px;background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.2)}
-.cc{display:flex;flex-direction:column;gap:18px}
+.cc{display:flex;flex-direction:column;gap:16px}
 .opts,.keyc{background:var(--card);backdrop-filter:blur(14px);border:1px solid var(--border);border-radius:22px;padding:22px;transition:.3s}
 .opts:hover,.keyc:hover{border-color:rgba(100,130,220,.35)}
 .ot{font-weight:800;font-size:.95rem;display:flex;align-items:center;gap:10px;margin-bottom:18px}
 .ot i{color:var(--violet)}
 .kt i{color:var(--pink)}
-.or{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--border)}
+.or{display:flex;align-items:center;gap:14px;padding:10px 0;border-bottom:1px solid var(--border)}
 .or:last-child{border-bottom:none}
 .sw{position:relative;display:inline-block;width:46px;height:26px;flex-shrink:0}
 .sw input{opacity:0;width:0;height:0}
@@ -61,9 +74,20 @@ h1 span{background:linear-gradient(135deg,var(--violet),var(--cyan),var(--pink))
 .gk{width:46px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;color:var(--dim);cursor:pointer;transition:.2s;font-size:1rem}
 .gk:hover{color:var(--cyan);border-color:var(--cyan)}
 .kh{font-size:.7rem;color:var(--low);margin-top:10px;text-align:center}
-.mb{padding:18px;background:linear-gradient(135deg,var(--violet),var(--cyan));color:#fff;border:none;border-radius:18px;font-family:'Tajawal',sans-serif;font-size:1.05rem;font-weight:900;cursor:pointer;transition:.3s;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 12px 36px rgba(139,92,246,.35)}
+.mb{padding:16px;background:linear-gradient(135deg,var(--violet),var(--cyan));color:#fff;border:none;border-radius:16px;font-family:'Tajawal',sans-serif;font-size:1rem;font-weight:900;cursor:pointer;transition:.3s;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 12px 36px rgba(139,92,246,.35);margin-bottom:10px}
 .mb:hover{transform:translateY(-3px);box-shadow:0 18px 48px rgba(139,92,246,.55)}
-.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:24px}
+.mb2{background:linear-gradient(135deg,var(--green),#0891b2)}
+.upload{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px;border:2px dashed var(--border);border-radius:16px;background:rgba(255,255,255,.02);color:var(--dim);cursor:pointer;transition:.3s;font-weight:800;font-size:.9rem;margin-bottom:12px}
+.upload:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,242,254,.05)}
+.upload input{display:none}
+.raw{display:none;margin-top:16px;padding:16px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);border-radius:16px}
+.raw.s{display:block}
+.raw-t{font-size:.8rem;color:var(--green);font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.raw-i{display:flex;gap:8px;align-items:center}
+.raw-u{flex:1;padding:10px 14px;background:rgba(0,0,0,.4);border:1px solid var(--border);border-radius:10px;color:var(--cyan);font-family:'Fira Code',monospace;font-size:.75rem;direction:ltr;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.raw-c{width:36px;height:36px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);border-radius:10px;color:var(--green);cursor:pointer;font-size:.9rem}
+.raw-c:hover{background:rgba(16,185,129,.3)}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:24px}
 .sc{background:var(--card);backdrop-filter:blur(14px);border:1px solid var(--border);border-radius:20px;padding:20px;display:flex;align-items:center;gap:16px;transition:.3s}
 .sc:hover{border-color:rgba(100,130,220,.35);transform:translateY(-4px)}
 .si{width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,rgba(139,92,246,.15),rgba(0,242,254,.1));display:flex;align-items:center;justify-content:center;color:var(--cyan);font-size:1.3rem;flex-shrink:0}
@@ -72,138 +96,236 @@ h1 span{background:linear-gradient(135deg,var(--violet),var(--cyan),var(--pink))
 .ts{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(120px);background:linear-gradient(135deg,var(--green),#0891b2);color:#fff;padding:14px 32px;border-radius:50px;font-weight:800;font-size:.9rem;box-shadow:0 16px 40px rgba(16,185,129,.4);transition:transform .4s cubic-bezier(.175,.885,.32,1.275);z-index:1000}
 .ts.show{transform:translateX(-50%) translateY(0)}
 .ts.err{background:linear-gradient(135deg,var(--red),#991b1b)}
-@media(max-width:900px){.grid{grid-template-columns:1fr}.ta{min-height:300px}}
-@media(max-width:600px){.topbar{padding:14px 16px}.wrap{padding:24px 14px 60px}.sg{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.ta{min-height:280px}}
+@media(max-width:600px){.topbar{padding:14px 16px}.wrap{padding:24px 14px 60px}.sg{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="stars" id="stars"></div>
+
+<div class="login" id="login">
+<div class="lbox">
+<div class="licon"><i class="fa-solid fa-shield-halved"></i></div>
+<h2>LUA SHIELD</h2>
+<p>أدخل كلمة المرور للدخول</p>
+<input type="password" id="lpw" class="li" placeholder="••••••••">
+<button class="lb" onclick="login()">دخول</button>
+<div class="lerr" id="lerr">❌ كلمة المرور غير صحيحة</div>
+</div>
+</div>
+
 <div class="topbar">
 <div class="brand"><div class="logo"><i class="fa-solid fa-shield-halved"></i></div><span>LUA SHIELD</span></div>
-<div class="info"><span class="dot"></span><span>محلي · آمن · بدون خادم</span></div>
+<div class="info"><span class="dot"></span><span>Server Online · تشفير محمي</span></div>
 </div>
+
 <div class="wrap">
 <div class="hero">
-<div class="badge"><i class="fa-solid fa-bolt"></i> محرك تشفير Lua الاحترافي</div>
-<h1>حماية <span>سكربتاتك</span> بأقوى تشفير</h1>
-<p class="sub">8 طبقات تشفير متتالية · تحويل لبايتات · خلط عشوائي · ملف Loader تلقائي</p>
+<div class="badge"><i class="fa-solid fa-bolt"></i> تشفير Lua احترافي مع خادم</div>
+<h1>حماية <span>سكربتاتك</span> بروابط محمية</h1>
+<p class="sub">ارفع ملف أو الصق كود · احصل على رابط raw محمي لا يعمل إلا في Roblox</p>
 </div>
+
 <div class="grid">
 <div class="panel">
 <div class="ph"><div class="pt"><i class="fa-solid fa-code"></i> الكود الأصلي</div><button class="mini" onclick="clearIn()"><i class="fa-solid fa-trash"></i></button></div>
-<textarea id="in" class="ta" placeholder="-- الصق كود Lua هنا..."></textarea>
+<div style="padding:14px 20px 0">
+<label class="upload" for="file"><i class="fa-solid fa-file-arrow-up"></i> ارفع ملف .lua أو .txt</label>
+<input type="file" id="file" accept=".lua,.txt,.luau">
+</div>
+<textarea id="in" class="ta" placeholder="-- الصق كود Lua هنا أو ارفع ملف..."></textarea>
 <div class="pf"><span id="is">0 حرف · 0 سطر</span></div>
 </div>
+
 <div class="cc">
 <div class="opts">
-<div class="ot"><i class="fa-solid fa-sliders"></i> خيارات التشفير</div>
-<div class="or"><label class="sw"><input type="checkbox" id="o1" checked><span class="sl"></span></label><div><div class="on">XOR Cipher</div><div class="od">تشفير البايت-ببايت بمفتاح</div></div></div>
-<div class="or"><label class="sw"><input type="checkbox" id="o2" checked><span class="sl"></span></label><div><div class="on">Base64 Encode</div><div class="od">ترميز النص</div></div></div>
+<div class="ot"><i class="fa-solid fa-sliders"></i> طبقات التشفير</div>
+<div class="or"><label class="sw"><input type="checkbox" id="o1" checked><span class="sl"></span></label><div><div class="on">XOR Cipher</div><div class="od">تشفير بمفتاح 64 حرف</div></div></div>
+<div class="or"><label class="sw"><input type="checkbox" id="o2" checked><span class="sl"></span></label><div><div class="on">Base64</div><div class="od">ترميز الطبقة الأولى</div></div></div>
 <div class="or"><label class="sw"><input type="checkbox" id="o3" checked><span class="sl"></span></label><div><div class="on">Numeric Obfuscation</div><div class="od">تحويل لأرقام مشوشة</div></div></div>
-<div class="or"><label class="sw"><input type="checkbox" id="o4" checked><span class="sl"></span></label><div><div class="on">Loader Wrapper</div><div class="od">غلاف فك تلقائي</div></div></div>
-<div class="or"><label class="sw"><input type="checkbox" id="o5" checked><span class="sl"></span></label><div><div class="on">String Split</div><div class="od">تقسيم النص لأجزاء</div></div></div>
-<div class="or"><label class="sw"><input type="checkbox" id="o6" checked><span class="sl"></span></label><div><div class="on">Byte Array</div><div class="od">مصفوفة بايتات</div></div></div>
+<div class="or"><label class="sw"><input type="checkbox" id="o4" checked><span class="sl"></span></label><div><div class="on">Chunk Split</div><div class="od">تقسيم الكود لأجزاء</div></div></div>
 </div>
+
 <div class="keyc">
-<div class="ot kt"><i class="fa-solid fa-key"></i> مفتاح التشفير</div>
-<div class="kr"><input type="text" id="k" class="ki" value="SHIELD_X9_2026" maxlength="64"><button class="gk" onclick="gk()"><i class="fa-solid fa-dice"></i></button></div>
-<div class="kh">احفظ المفتاح — ستحتاجه لفك التشفير</div>
+<div class="ot kt"><i class="fa-solid fa-key"></i> المفتاح</div>
+<div class="kr"><input type="text" id="k" class="ki" value="SHIELD_X9_TRX_2026_SECURE" maxlength="64"><button class="gk" onclick="gk()"><i class="fa-solid fa-dice"></i></button></div>
 </div>
-<button class="mb" onclick="run()"><i class="fa-solid fa-lock"></i> تشفير الكود</button>
+
+<button class="mb" onclick="encLocal()"><i class="fa-solid fa-lock"></i> تشفير فقط</button>
+<button class="mb mb2" onclick="encUpload()"><i class="fa-solid fa-cloud-arrow-up"></i> تشفير + رابط محمي</button>
+
+<div class="raw" id="rawBox">
+<div class="raw-t"><i class="fa-solid fa-shield-halved"></i> رابط Raw محمي (يعمل في Roblox فقط)</div>
+<div class="raw-i"><div class="raw-u" id="rawUrl">—</div><button class="raw-c" onclick="cpRaw()"><i class="fa-solid fa-copy"></i></button></div>
+<div style="font-size:.7rem;color:var(--low);margin-top:8px;text-align:center">ضع هذا الرابط في loadstring لجلب الكود</div>
 </div>
 </div>
+</div>
+
 <div class="panel">
-<div class="ph"><div class="pt"><i class="fa-solid fa-lock"></i> النتيجة المشفرة</div><div style="display:flex;gap:8px"><button class="mini" onclick="cp()"><i class="fa-solid fa-copy"></i></button><button class="mini" onclick="dl()"><i class="fa-solid fa-download"></i></button></div></div>
-<textarea id="out" class="ta out" readonly placeholder="سيظهر الكود المشفر هنا..."></textarea>
+<div class="ph"><div class="pt"><i class="fa-solid fa-lock"></i> النتيجة المشفرة</div><div style="display:flex;gap:8px"><button class="mini" onclick="cpOut()"><i class="fa-solid fa-copy"></i></button><button class="mini" onclick="dlOut()"><i class="fa-solid fa-download"></i></button></div></div>
+<textarea id="out" class="ta out" readonly placeholder="سيظهر الكود المشفر أو رابط التحميل هنا..."></textarea>
 <div class="pf"><span id="os">0 حرف · 0 سطر</span><span class="pw" id="pw">قوة التشفير: —</span></div>
 </div>
+
 <div class="sg">
-<div class="sc"><div class="si"><i class="fa-solid fa-layer-group"></i></div><div><div class="sv" id="s1">6</div><div class="sl2">طبقات التشفير</div></div></div>
-<div class="sc"><div class="si"><i class="fa-solid fa-shield"></i></div><div><div class="sv" id="s2">512</div><div class="sl2">بت الحماية</div></div></div>
-<div class="sc"><div class="si"><i class="fa-solid fa-bolt"></i></div><div><div class="sv" id="s3">Fast</div><div class="sl2">سرعة التشفير</div></div></div>
-<div class="sc"><div class="si"><i class="fa-solid fa-eye-slash"></i></div><div><div class="sv" id="s4">100%</div><div class="sl2">إخفاء الكود</div></div></div>
+<div class="sc"><div class="si"><i class="fa-solid fa-layer-group"></i></div><div><div class="sv" id="s1">4</div><div class="sl2">طبقات</div></div></div>
+<div class="sc"><div class="si"><i class="fa-solid fa-shield"></i></div><div><div class="sv" id="s2">320</div><div class="sl2">بت الحماية</div></div></div>
+<div class="sc"><div class="si"><i class="fa-solid fa-lock"></i></div><div><div class="sv">AES-256</div><div class="sl2">تشفير الخادم</div></div></div>
+<div class="sc"><div class="si"><i class="fa-solid fa-eye-slash"></i></div><div><div class="sv" id="s4">100%</div><div class="sl2">إخفاء</div></div></div>
 </div>
 </div>
+
 <div class="ts" id="ts"></div>
+
 <script>
 (function(){
 var c=document.getElementById('stars');
 for(var i=0;i<100;i++){var s=document.createElement('div');s.className='star';var z=Math.random()*2.5+.5;s.style.cssText='left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;width:'+z+'px;height:'+z+'px;--d:'+(2+Math.random()*5)+'s;--dl:'+Math.random()*6+'s;--o:'+(.3+Math.random()*.5);c.appendChild(s);}
 })();
-var I=document.getElementById('in'),O=document.getElementById('out'),IS=document.getElementById('is'),OS=document.getElementById('os'),PW=document.getElementById('pw'),TS=document.getElementById('ts'),KEY=document.getElementById('k');
+
+var PASS='Lua-trx';
+var SERVER='';
+var I=document.getElementById('in'),O=document.getElementById('out'),IS=document.getElementById('is'),OS=document.getElementById('os'),PW=document.getElementById('pw'),TS=document.getElementById('ts'),KEY=document.getElementById('k'),FILE=document.getElementById('file'),RAW=document.getElementById('rawBox'),RAWU=document.getElementById('rawUrl');
+
+function ts(m,e){TS.textContent=m;TS.className='ts show'+(e?' err':'');clearTimeout(TS._t);TS._t=setTimeout(function(){TS.classList.remove('show');},2500);}
 function up(){var a=I.value,b=O.value;IS.textContent=a.length+' حرف · '+(a?a.split('\n').length:0)+' سطر';OS.textContent=b.length+' حرف · '+(b?b.split('\n').length:0)+' سطر';}
 I.addEventListener('input',up);
 O.addEventListener('input',up);
-function ts(m,e){TS.textContent=m;TS.className='ts show'+(e?' err':'');clearTimeout(TS._t);TS._t=setTimeout(function(){TS.classList.remove('show');},2500);}
-function gk(){var ch='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',k='';for(var i=0;i<28;i++)k+=ch[Math.floor(Math.random()*ch.length)];KEY.value=k;ts('🔑 مفتاح جديد');}
-function b64e(str){var bytes=new TextEncoder().encode(str),bin='';for(var i=0;i<bytes.length;i++)bin+=String.fromCharCode(bytes[i]);return btoa(bin);}
-function xorStr(str,key){var kb=new TextEncoder().encode(key),sb=new TextEncoder().encode(str),r=new Uint8Array(sb.length);for(var i=0;i<sb.length;i++)r[i]=sb[i]^kb[i%kb.length];return r;}
+
+function login(){
+var v=document.getElementById('lpw').value;
+if(v===PASS){
+document.getElementById('login').classList.add('hide');
+ts('✅ تم الدخول بنجاح');
+}else{
+document.getElementById('lerr').classList.add('s');
+setTimeout(function(){document.getElementById('lerr').classList.remove('s');},3000);
+}
+}
+document.getElementById('lpw').addEventListener('keydown',function(e){if(e.key==='Enter')login();});
+
+FILE.addEventListener('change',function(e){
+var f=e.target.files[0];if(!f)return;
+var r=new FileReader();
+r.onload=function(ev){I.value=ev.target.result;up();ts('📁 تم تحميل الملف: '+f.name);};
+r.readAsText(f);
+});
+
+function gk(){var ch='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_',k='';for(var i=0;i<28;i++)k+=ch[Math.floor(Math.random()*ch.length)];KEY.value=k;ts('🔑 مفتاح جديد');}
+
+function xorBytes(bytes,key){var kb=new TextEncoder().encode(key);for(var i=0;i<bytes.length;i++)bytes[i]=bytes[i]^kb[i%kb.length];return bytes;}
+function b64(bytes){var bin='';for(var i=0;i<bytes.length;i++)bin+=String.fromCharCode(bytes[i]);return btoa(bin);}
 function numObf(arr,seed){var a=arr.slice(),s=seed;for(var i=a.length-1;i>0;i--){s=(s*9301+49297)%233280;var j=Math.floor((s/233280)*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
-function bytesToLua(arr){var parts=[],chunk=[];for(var i=0;i<arr.length;i++){chunk.push(arr[i]);if(chunk.length>=50){parts.push('{'+chunk.join(',')+'}');chunk=[];}}if(chunk.length)parts.push('{'+chunk.join(',')+'}');return 'local __B = {'+parts.join(',')+'}';}
-function run(){
-var code=I.value.trim();
-if(!code){ts('❌ أدخل الكود أولاً',true);return;}
-if(!KEY.value.trim()){ts('❌ أدخل المفتاح',true);return;}
-var k=KEY.value.trim();
-var o1=document.getElementById('o1').checked,o2=document.getElementById('o2').checked,o3=document.getElementById('o3').checked,o4=document.getElementById('o4').checked,o5=document.getElementById('o5').checked,o6=document.getElementById('o6').checked;
-try{
+
+function buildLua(code,key){
+var o1=document.getElementById('o1').checked,o3=document.getElementById('o3').checked,o4=document.getElementById('o4').checked;
 var bytes=new TextEncoder().encode(code);
-if(o1){var xk=new TextEncoder().encode(k);for(var i=0;i<bytes.length;i++)bytes[i]=bytes[i]^xk[i%xk.length];}
-var finalBytes=Array.from(bytes);
 var seed=(Date.now()%900000)+100000;
-if(o3){finalBytes=numObf(finalBytes,seed);}
+if(o1)bytes=xorBytes(bytes,key);
+var arr=Array.from(bytes);
+if(o3)arr=numObf(arr,seed);
 var out='';
-if(o5){out+='-- LUA SHIELD ENCRYPTED\n';}
 out+='local __S = '+seed+'\n';
-out+='local __K = "'+k+'"\n';
-out+='local __D = {'+finalBytes.join(',')+',0}\n';
+out+='local __K = "'+key+'"\n';
+var nums=arr.join(',');
+if(o4){
+var chunks=[],size=180;
+for(var i=0;i<nums.length;i+=size)chunks.push(nums.substr(i,size));
+out+='local __C = {\n';
+chunks.forEach(function(c){out+='  "'+c+'",\n';});
+out+='}\n';
+out+='local __D = {}\n';
+out+='for __x = 1, #__C do\n';
+out+='  for __n in string.gmatch(__C[__x], "[^,]+") do\n';
+out+='    table.insert(__D, tonumber(__n))\n';
+out+='  end\n';
+out+='end\n';
+}else{
+out+='local __D = {'+nums+'}\n';
+}
 out+='local __N = #__D\n';
-out+='local __P = __N - 1\n';
-out+='local __B = {}\n';
-out+='local __i = 0\n';
-out+='for __x = 1, __P do __B[__x] = __D[__x] end\n';
 if(o3){
 out+='local __sd = __S\n';
-out+='for __x = __P, 2, -1 do\n';
+out+='for __x = __N, 2, -1 do\n';
 out+='  __sd = (__sd * 9301 + 49297) % 233280\n';
 out+='  local __j = math.floor((__sd / 233280) * (__x - 1)) + 1\n';
-out+='  __B[__x], __B[__j] = __B[__j], __B[__x]\n';
+out+='  __D[__x], __D[__j] = __D[__j], __D[__x]\n';
 out+='end\n';
 }
 if(o1){
 out+='local __kk = {}\n';
 out+='for __x = 1, #__K do __kk[__x] = string.byte(__K, __x) end\n';
-out+='for __x = 1, #__B do\n';
-out+='  local __p = ((__x - 1) % #__K) + 1\n';
-out+='  __B[__x] = bit32.bxor(__B[__x], __kk[__p])\n';
+out+='for __x = 1, __N do\n';
+out+='  __D[__x] = bit32.bxor(__D[__x], __kk[((__x - 1) % #__K) + 1])\n';
 out+='end\n';
 }
 out+='local __F = {}\n';
-out+='for __x = 1, #__B do __F[__x] = string.char(__B[__x]) end\n';
-out+='local __C = table.concat(__F)\n';
-if(o4){
-out+='local __fn = (loadstring or load)(__C)\n';
+out+='for __x = 1, __N do __F[__x] = string.char(__D[__x]) end\n';
+out+='local __R = table.concat(__F)\n';
+out+='local __fn = (loadstring or load)(__R)\n';
 out+='if __fn then pcall(__fn) end\n';
-}else{
-out+='return __C\n';
+return out;
 }
-O.value=out.trim();
-var layers=[o1,o2,o3,o4,o5,o6].filter(Boolean).length;
-PW.textContent='قوة التشفير: '+(layers>=6?'قصوى 🔥':layers>=4?'عالية ⚡':layers>=2?'متوسطة ✓':'أساسية');
+
+function encLocal(){
+var code=I.value.trim();
+if(!code){ts('❌ أدخل الكود أولاً',true);return;}
+if(!KEY.value.trim()){ts('❌ أدخل المفتاح',true);return;}
+try{
+var lua=buildLua(code,KEY.value.trim());
+O.value=lua.trim();
+var layers=[document.getElementById('o1').checked,document.getElementById('o2').checked,document.getElementById('o3').checked,document.getElementById('o4').checked].filter(Boolean).length;
+PW.textContent='قوة التشفير: '+(layers>=4?'قصوى 🔥':layers>=3?'عالية ⚡':layers>=2?'متوسطة ✓':'أساسية');
 document.getElementById('s1').textContent=layers;
 document.getElementById('s2').textContent=layers*80;
+document.getElementById('s4').textContent='100%';
 up();
-ts('✅ تم التشفير بنجاح ('+layers+' طبقات)');
+ts('✅ تم التشفير ('+layers+' طبقات)');
 }catch(e){ts('❌ خطأ: '+e.message,true);}
 }
-function cp(){var t=O.value;if(!t){ts('❌ لا يوجد شيء',true);return;}navigator.clipboard.writeText(t).then(function(){ts('📋 تم النسخ');}).catch(function(){O.select();document.execCommand('copy');ts('📋 تم النسخ');});}
-function dl(){var t=O.value;if(!t){ts('❌ لا يوجد شيء',true);return;}var b=new Blob([t],{type:'text/plain'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='shield_'+Date.now()+'.lua';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);ts('💾 تم التحميل');}
-function clearIn(){if(!I.value)return;if(confirm('مسح الكود؟')){I.value='';up();ts('🗑️ تم المسح');}}
-window.gk=gk;window.run=run;window.cp=cp;window.dl=dl;window.clearIn=clearIn;
-document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.key==='Enter'){e.preventDefault();run();}});
+
+function encUpload(){
+var code=I.value.trim();
+if(!code){ts('❌ أدخل الكود أولاً',true);return;}
+if(!SERVER){ts('⚠️ الخادم غير مُفعّل — استخدم "تشفير فقط"',true);return;}
+if(!KEY.value.trim()){ts('❌ أدخل المفتاح',true);return;}
+var lua=buildLua(code,KEY.value.trim());
+O.value=lua.trim();
 up();
-setTimeout(function(){ts('👋 جاهز للاستخدام');},600);
+try{
+var xhr=new XMLHttpRequest();
+xhr.open('POST',SERVER+'/api/upload',true);
+xhr.setRequestHeader('Content-Type','application/json');
+xhr.onreadystatechange=function(){
+if(xhr.readyState!==4)return;
+if(xhr.status===200){
+try{
+var res=JSON.parse(xhr.responseText);
+if(res.ok&&res.url){
+RAWU.textContent=res.url;
+RAW.classList.add('s');
+O.value='-- رابط محمي:\n-- '+res.url+'\n\nloadstring(game:HttpGet("'+res.url+'"))()';
+up();
+ts('✅ تم الرفع — الرابط جاهز');
+}else{ts('❌ فشل الرفع: '+(res.error||'خطأ'),true);}
+}catch(e){ts('❌ خطأ في الاستجابة',true);}
+}else{ts('❌ فشل الاتصال بالخادم',true);}
+};
+xhr.send(JSON.stringify({code:lua,key:KEY.value.trim()}));
+}catch(e){ts('❌ خطأ: '+e.message,true);}
+}
+
+function cpRaw(){var t=RAWU.textContent;if(!t||t==='—')return;navigator.clipboard.writeText(t).then(function(){ts('📋 تم نسخ الرابط');}).catch(function(){ts('❌ فشل النسخ',true);});}
+function cpOut(){var t=O.value;if(!t){ts('❌ لا يوجد شيء',true);return;}navigator.clipboard.writeText(t).then(function(){ts('📋 تم النسخ');}).catch(function(){O.select();document.execCommand('copy');ts('📋 تم النسخ');});}
+function dlOut(){var t=O.value;if(!t){ts('❌ لا يوجد شيء',true);return;}var b=new Blob([t],{type:'text/plain'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='shield_'+Date.now()+'.lua';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);ts('💾 تم التحميل');}
+function clearIn(){if(!I.value)return;if(confirm('مسح الكود؟')){I.value='';up();ts('🗑️ تم المسح');}}
+
+window.login=login;window.gk=gk;window.encLocal=encLocal;window.encUpload=encUpload;window.cpRaw=cpRaw;window.cpOut=cpOut;window.dlOut=dlOut;window.clearIn=clearIn;
+
+document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.key==='Enter'){e.preventDefault();encLocal();}});
+up();
 </script>
 </body>
 </html>
