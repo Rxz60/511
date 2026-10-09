@@ -373,7 +373,7 @@
 
         const SITE_SECRET_KEYS = [
             "hndr_19c7cb11f032a369389d2e0e0cea58b41c80",
-            "SecretKeyTwo",
+            "wgpt_5b117a74f34317dd35ef91b5d6cdd4167440c80fcffd92a7",
             "SecretKeyThree",
             "SecretKeyFour",
             "SecretKeyFive",
