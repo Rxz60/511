@@ -4,7 +4,7 @@ import asyncio
 import aiohttp
 
 # التوكن الخاص بك
-TOKEN = "MTU0NTQ1MTUyNzEzNTY5OTAxNA.GbN_PU.6fk7Ez72S89P5PR3dqw_NHccGTd4I95Q1eXcwM"
+TOKEN = "MTU1NTkxNzY0NzUwMDI3OTg1OQ.GIvtAA.6nGjKn0UqoVfS_ebz82FOH8eXAhyDfZbpJoHKo"
 
 intents = discord.Intents.default()
 intents.message_content = True
