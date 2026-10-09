@@ -372,7 +372,7 @@
         const toast = document.getElementById('toast');
 
         const SITE_SECRET_KEYS = [
-            "SecretKeyOne",
+            "hndr_19c7cb11f032a369389d2e0e0cea58b41c80",
             "SecretKeyTwo",
             "SecretKeyThree",
             "SecretKeyFour",
