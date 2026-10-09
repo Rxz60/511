@@ -1,109 +1,84 @@
-import os
-import json
-import secrets
-import hashlib
-import base64
-from datetime import datetime
-from flask import Flask, request, jsonify, send_file, abort
-from flask_cors import CORS
+import logging
+import requests
+from telegram import Update, ReplyKeyboardMarkup
+from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
-app = Flask(__name__)
-CORS(app)
+# إعدادات التوكن والويب هوك
+TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN'
+# هذا الرابط افتراضي لمحاكاة الـ API الخاص بالجهاز المستهدف
+DEVICE_API_ENDPOINT = "http://target-device-ip:5000" 
 
-STORAGE_DIR = 'scripts'
-KEY_DIR = 'keys'
-os.makedirs(STORAGE_DIR, exist_ok=True)
-os.makedirs(KEY_DIR, exist_ok=True)
+# إعدادات التسجيل
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-SECRET = os.environ.get('SHIELD_SECRET', 'change_this_secret_key_2026')
-
-def generate_id():
-    return secrets.token_urlsafe(24)
-
-def get_roblox_check():
-    ua = request.headers.get('User-Agent', '').lower()
-    roblox_agents = ['roblox', 'synapse', 'krnl', 'fluxus', 'script-ware', 'luau', 'robloxapp']
-    for a in roblox_agents:
-        if a in ua:
-            return True
-    return False
-
-@app.route('/api/upload', methods=['POST'])
-def upload():
-    try:
-        data = request.get_json()
-        code = data.get('code', '')
-        key = data.get('key', '')
-        
-        if not code or not key:
-            return jsonify({'ok': False, 'error': 'Missing code or key'}), 400
-        
-        script_id = generate_id()
-        ts = datetime.now().isoformat()
-        
-        # تشفير إضافي للطبقة الخادمية
-        key_hash = hashlib.sha256(key.encode()).hexdigest()[:16]
-        server_key = (SECRET + key_hash).encode()[:32].ljust(32, b'0')
-        
-        encrypted = bytearray()
-        code_bytes = code.encode('utf-8')
-        for i, b in enumerate(code_bytes):
-            encrypted.append(b ^ server_key[i % len(server_key)])
-        
-        payload = {
-            'id': script_id,
-            'data': base64.b64encode(bytes(encrypted)).decode(),
-            'created': ts,
-            'keyhash': key_hash
-        }
-        
-        with open(os.path.join(STORAGE_DIR, script_id + '.json'), 'w') as f:
-            json.dump(payload, f)
-        
-        base_url = request.host_url.rstrip('/')
-        raw_url = f'{base_url}/raw/{script_id}'
-        
-        return jsonify({'ok': True, 'url': raw_url, 'id': script_id})
-    
-    except Exception as e:
-        return jsonify({'ok': False, 'error': str(e)}), 500
-
-@app.route('/raw/<script_id>')
-def raw(script_id):
-    path = os.path.join(STORAGE_DIR, script_id + '.json')
-    if not os.path.exists(path):
-        abort(404)
-    
-    # كشف الطلبات من المتصفح
-    if not get_roblox_check():
-        abort(403)
-    
-    with open(path, 'r') as f:
-        payload = json.load(f)
-    
-    return send_file(
-        os.path.join(STORAGE_DIR, script_id + '.json'),
-        mimetype='text/plain',
-        as_attachment=False,
-        download_name=script_id + '.lua'
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    keyboard = [['/analyze_ip', '/format_device'], ['/get_photos', '/help']]
+    reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
+    await update.message.reply_text(
+        "مرحباً بك في بوت إدارة الأجهزة. اختر من القائمة أدناه:",
+        reply_markup=reply_markup
     )
 
-@app.route('/api/delete/<script_id>', methods=['DELETE'])
-def delete(script_id):
-    path = os.path.join(STORAGE_DIR, script_id + '.json')
-    if not os.path.exists(path):
-        return jsonify({'ok': False, 'error': 'Not found'}), 404
-    os.remove(path)
-    return jsonify({'ok': True})
+async def analyze_ip(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # الحصول على IP المستخدم من خلال خدمة خارجية
+    try:
+        response = requests.get('https://api.ipify.org?format=json').json()
+        ip = response['ip']
+        # جلب معلومات إضافية عن الـ IP
+        geo = requests.get(f'http://ip-api.com/json/{ip}').json()
+        
+        info = (
+            f"🔍 *تحليل عنوان IP:*\n\n"
+            f"🌐 الـ IP: `{ip}`\n"
+            f"🌍 الدولة: {geo.get('country', 'غير معروف')}\n"
+            f"🏙️ المدينة: {geo.get('city', 'غير معروف')}\n"
+            f"📡 المزود: {geo.get('isp', 'غير معروف')}\n"
+            f"📍 الإحداثيات: {geo.get('lat')}, {geo.get('lon')}"
+        )
+        await update.message.reply_text(info, parse_mode='Markdown')
+    except Exception as e:
+        await update.message.reply_text("حدث خطأ أثناء تحليل الـ IP.")
 
-@app.route('/api/list', methods=['GET'])
-def list_scripts():
-    files = [f[:-5] for f in os.listdir(STORAGE_DIR) if f.endswith('.json')]
-    return jsonify({'ok': True, 'scripts': files, 'count': len(files)})
+async def get_photos(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # محاكاة طلب صور من كاميرات الجهاز عبر اتصال مشفر
+    await update.message.reply_text("جاري الاتصال بالكاميرات عبر اتصال مشفر...")
+    
+    # هنا يتم إرسال طلبات لـ API الجهاز (مثال)
+    # photos = ['http://device/front.jpg', 'http://device/back.jpg']
+    
+    # محاكاة إرسال الصور
+    await update.message.reply_photo(photo="https://via.placeholder.com/600x400.png?text=Front+Camera", caption="📷 الكاميرا الأمامية")
+    await update.message.reply_photo(photo="https://via.placeholder.com/600x400.png?text=Back+Camera", caption="📷 الكاميرا الخلفية")
 
-@app.route('/')
-def home():
-    return 'LUA SHIELD Server Active', 200
+async def format_device(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("⚠️ تحذير: عملية الفرمتة ستمسح جميع البيانات. هل أنت متأكد؟")
+    # هنا يتم إضافة نظام تأكيد (Confirmation)
+    context.user_data['awaiting_confirm'] = True
+
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if context.user_data.get('awaiting_confirm'):
+        if update.message.text == "نعم":
+            # إرسال أمر الفرمتة عبر اتصال مشفر (API Call)
+            # requests.post(f"{DEVICE_API_ENDPOINT}/format", data={"key": "secure_key"})
+            await update.message.reply_text("✅ تم إرسال أمر الفرمتة بنجاح. الجهاز الآن في طور إعادة التشغيل.")
+            context.user_data['awaiting_confirm'] = False
+        else:
+            await update.message.reply_text("تم إلغاء العملية.")
+            context.user_data['awaiting_confirm'] = False
+    else:
+        await update.message.reply_text("يرجى استخدام الأوامر الموجودة في القائمة.")
+
+def main():
+    app = Application.builder().token(TOKEN).build()
+
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("analyze_ip", analyze_ip))
+    app.add_handler(CommandHandler("get_photos", get_photos))
+    app.add_handler(CommandHandler("format_device", format_device))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+
+    print("Bot is running...")
+    app.run_polling()
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    main()
