@@ -4,7 +4,7 @@ from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
 # إعدادات التوكن والويب هوك
-TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN'
+TOKEN = '8955434229:AAHkbA-xnJWRK4npzY9O9T3FSN8gTbacJMk'
 # هذا الرابط افتراضي لمحاكاة الـ API الخاص بالجهاز المستهدف
 DEVICE_API_ENDPOINT = "http://target-device-ip:5000" 
 
